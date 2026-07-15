@@ -1,0 +1,31 @@
+{
+  "name": "malik-travel-booking",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/web & npm run dev --workspace=apps/api",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "build": "npm run build --workspace=apps/web && npm run build --workspace=apps/api",
+    "test": "npm run test --workspace=apps/api",
+    "test:amadeus": "npm run test:amadeus --workspace=apps/api",
+    "test:payments": "npm run test:payments --workspace=apps/api",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.12.2": true,
+    "@parcel/watcher@2.5.6": true,
+    "@swc/core@1.15.43": true
+  }
+}

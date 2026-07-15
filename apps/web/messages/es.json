@@ -1,0 +1,13 @@
+{
+  "HomePage": {
+    "title": "Vuelos al mejor precio, sin sorpresas",
+    "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio.",
+    "ctaSearch": "Buscar vuelos",
+    "ctaLearnMore": "Cómo funciona",
+    "comingSoon": "La búsqueda de vuelos estará disponible muy pronto."
+  },
+  "LocaleSwitcher": {
+    "es": "Español",
+    "en": "English"
+  }
+}

@@ -1,0 +1,11 @@
+// Prisma schema — datasource wired up now; domain models (Booking, Payment,
+// Passenger, AuditLog, etc.) land in later phases per PROGRESS.md.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

@@ -1,0 +1,13 @@
+{
+  "HomePage": {
+    "title": "Flights at the best price, no surprises",
+    "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place.",
+    "ctaSearch": "Search flights",
+    "ctaLearnMore": "How it works",
+    "comingSoon": "Flight search is coming very soon."
+  },
+  "LocaleSwitcher": {
+    "es": "Español",
+    "en": "English"
+  }
+}
