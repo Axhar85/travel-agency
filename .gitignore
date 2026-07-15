@@ -37,3 +37,8 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Claude Code session-local files - not meant for the shared repo
+.claude/
+**/CLAUDE.md
+PROGRESS.md
