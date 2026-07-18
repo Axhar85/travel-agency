@@ -1,13 +1,60 @@
 {
   "HomePage": {
     "title": "Flights at the best price, no surprises",
-    "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place.",
-    "ctaSearch": "Search flights",
-    "ctaLearnMore": "How it works",
-    "comingSoon": "Flight search is coming very soon."
+    "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place."
   },
   "LocaleSwitcher": {
     "es": "Español",
     "en": "English"
+  },
+  "SearchForm": {
+    "tripType": {
+      "roundTrip": "Round-trip",
+      "oneWay": "One-way"
+    },
+    "origin": "Origin",
+    "originPlaceholder": "Where from?",
+    "destination": "Destination",
+    "destinationPlaceholder": "Where to?",
+    "swapAirports": "Swap origin and destination",
+    "departureDate": "Departure date",
+    "returnDate": "Return date",
+    "passengers": "Passengers",
+    "adults": "Adults",
+    "adultsHint": "Age 12+",
+    "children": "Children",
+    "childrenHint": "Age 2-11",
+    "infants": "Infants",
+    "infantsHint": "Under 2",
+    "cabinClass": "Class",
+    "cabinClasses": {
+      "ECONOMY": "Economy",
+      "PREMIUM_ECONOMY": "Premium Economy",
+      "BUSINESS": "Business",
+      "FIRST": "First Class"
+    },
+    "done": "Done",
+    "search": "Search flights",
+    "errorSelectAirports": "Please select both an origin and a destination airport.",
+    "errorSameAirport": "Origin and destination cannot be the same."
+  },
+  "SearchResults": {
+    "newSearch": "← New search",
+    "genericError": "We couldn't complete the search. Please try again.",
+    "noResults": "No flights found for this search.",
+    "sortBy": "Sort by",
+    "sortPrice": "Price",
+    "sortDuration": "Duration",
+    "sortStops": "Stops",
+    "nonStopOnly": "Non-stop only",
+    "nonStop": "Non-stop",
+    "stops": "{count, plural, one {# stop} other {# stops}}",
+    "select": "Select",
+    "confirmPrice": "Confirm price",
+    "priceChanged": "The price changed from {original} to {updated} since you searched.",
+    "priceConfirmed": "Price confirmed, no changes.",
+    "backToResults": "Back to results",
+    "continue": "Continue",
+    "bookingComingSoon": "Booking will be available in Phase 3. For now, this is the confirmed flight price."
   }
 }
