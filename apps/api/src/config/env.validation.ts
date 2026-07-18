@@ -53,6 +53,21 @@ class EnvironmentVariables {
   @IsUrl({ require_tld: false })
   AMADEUS_API_BASE_URL: string;
 
+  // How long a single raw Amadeus offer stays cached in Redis so
+  // priceOffer(offerId) can look it up (Self-Service is stateless).
+  @IsInt()
+  @Min(1)
+  @IsOptional()
+  AMADEUS_OFFER_CACHE_TTL_SECONDS: number = 900;
+
+  // How long a full search response (list of offers) stays cached in Redis,
+  // keyed by normalized search params. Shorter than the offer TTL above
+  // since fares are volatile and a stale offer id is a poor cache hit.
+  @IsInt()
+  @Min(1)
+  @IsOptional()
+  SEARCH_RESULTS_CACHE_TTL_SECONDS: number = 300;
+
   @IsString()
   @IsOptional()
   STRIPE_SECRET_KEY: string = '';

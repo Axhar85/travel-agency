@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { AmadeusExceptionFilter } from './amadeus/filters/amadeus-exception.filter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -18,6 +19,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.useGlobalFilters(new AmadeusExceptionFilter());
 
   const port = config.get<number>('PORT', 4000);
   await app.listen(port);

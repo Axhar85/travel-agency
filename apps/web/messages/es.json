@@ -1,13 +1,60 @@
 {
   "HomePage": {
     "title": "Vuelos al mejor precio, sin sorpresas",
-    "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio.",
-    "ctaSearch": "Buscar vuelos",
-    "ctaLearnMore": "Cómo funciona",
-    "comingSoon": "La búsqueda de vuelos estará disponible muy pronto."
+    "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio."
   },
   "LocaleSwitcher": {
     "es": "Español",
     "en": "English"
+  },
+  "SearchForm": {
+    "tripType": {
+      "roundTrip": "Ida y vuelta",
+      "oneWay": "Solo ida"
+    },
+    "origin": "Origen",
+    "originPlaceholder": "¿Desde dónde sales?",
+    "destination": "Destino",
+    "destinationPlaceholder": "¿A dónde vas?",
+    "swapAirports": "Intercambiar origen y destino",
+    "departureDate": "Fecha de ida",
+    "returnDate": "Fecha de vuelta",
+    "passengers": "Pasajeros",
+    "adults": "Adultos",
+    "adultsHint": "12 años o más",
+    "children": "Niños",
+    "childrenHint": "De 2 a 11 años",
+    "infants": "Bebés",
+    "infantsHint": "Menores de 2 años",
+    "cabinClass": "Clase",
+    "cabinClasses": {
+      "ECONOMY": "Turista",
+      "PREMIUM_ECONOMY": "Turista premium",
+      "BUSINESS": "Business",
+      "FIRST": "Primera clase"
+    },
+    "done": "Hecho",
+    "search": "Buscar vuelos",
+    "errorSelectAirports": "Selecciona un aeropuerto de origen y otro de destino.",
+    "errorSameAirport": "El origen y el destino no pueden ser el mismo."
+  },
+  "SearchResults": {
+    "newSearch": "← Nueva búsqueda",
+    "genericError": "No se pudo completar la búsqueda. Inténtalo de nuevo.",
+    "noResults": "No hemos encontrado vuelos para esta búsqueda.",
+    "sortBy": "Ordenar por",
+    "sortPrice": "Precio",
+    "sortDuration": "Duración",
+    "sortStops": "Escalas",
+    "nonStopOnly": "Solo directos",
+    "nonStop": "Directo",
+    "stops": "{count, plural, one {# escala} other {# escalas}}",
+    "select": "Seleccionar",
+    "confirmPrice": "Confirmar precio",
+    "priceChanged": "El precio ha cambiado de {original} a {updated} desde que buscaste este vuelo.",
+    "priceConfirmed": "El precio se ha confirmado, sin cambios.",
+    "backToResults": "Volver a los resultados",
+    "continue": "Continuar",
+    "bookingComingSoon": "La reserva estará disponible en la Fase 3. Por ahora, este es el precio confirmado del vuelo."
   }
 }
