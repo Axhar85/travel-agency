@@ -8,9 +8,10 @@ interface PriceConfirmationProps {
   pricedOffer: PricedOffer;
   onBack: () => void;
   onContinue: () => void;
+  isContinuing: boolean;
 }
 
-export function PriceConfirmation({ pricedOffer, onBack, onContinue }: PriceConfirmationProps) {
+export function PriceConfirmation({ pricedOffer, onBack, onContinue, isContinuing }: PriceConfirmationProps) {
   const t = useTranslations("SearchResults");
   const locale = useLocale();
 
@@ -39,16 +40,18 @@ export function PriceConfirmation({ pricedOffer, onBack, onContinue }: PriceConf
         <button
           type="button"
           onClick={onBack}
-          className="flex-1 rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-black dark:border-zinc-700 dark:text-white"
+          disabled={isContinuing}
+          className="flex-1 rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-black disabled:opacity-50 dark:border-zinc-700 dark:text-white"
         >
           {t("backToResults")}
         </button>
         <button
           type="button"
           onClick={onContinue}
-          className="flex-1 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background"
+          disabled={isContinuing}
+          className="flex-1 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background disabled:opacity-50"
         >
-          {t("continue")}
+          {isContinuing ? t("startingBooking") : t("continue")}
         </button>
       </div>
     </div>

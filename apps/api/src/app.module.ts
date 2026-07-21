@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AmadeusModule } from './amadeus/amadeus.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BookingModule } from './booking/booking.module';
 import { validateEnv } from './config/env.validation';
 import { HealthModule } from './health/health.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -20,6 +21,7 @@ import { SearchModule } from './search/search.module';
     AmadeusModule,
     HealthModule,
     SearchModule,
+    BookingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

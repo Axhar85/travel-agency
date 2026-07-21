@@ -62,3 +62,42 @@ export interface ApiErrorResponse {
   statusCode: number;
   message: string;
 }
+
+// Mirrors apps/api/src/booking/booking-session.types.ts and dto/passenger.dto.ts
+
+export type PassengerType = "ADULT" | "CHILD" | "INFANT";
+
+export interface PassengerCounts {
+  adults: number;
+  children: number;
+  infants: number;
+}
+
+export interface PassengerDocument {
+  documentType: "PASSPORT";
+  number: string;
+  expiryDate: string;
+  issuanceCountry: string;
+  nationality: string;
+  holder: boolean;
+}
+
+export interface Passenger {
+  type: PassengerType;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: "MALE" | "FEMALE";
+  email?: string;
+  phone?: string;
+  document?: PassengerDocument;
+}
+
+export type BookingStep = "passengers" | "review";
+
+export interface BookingSessionData {
+  pricedOffer: PricedOffer;
+  passengerCounts: PassengerCounts;
+  passengers: Passenger[];
+  step: BookingStep;
+}

@@ -55,6 +55,33 @@
     "priceConfirmed": "El precio se ha confirmado, sin cambios.",
     "backToResults": "Volver a los resultados",
     "continue": "Continuar",
-    "bookingComingSoon": "La reserva estará disponible en la Fase 3. Por ahora, este es el precio confirmado del vuelo."
+    "startingBooking": "Iniciando reserva…"
+  },
+  "PassengerForm": {
+    "title": "Datos de los pasajeros",
+    "loading": "Cargando…",
+    "passengerLabel": "Pasajero {number} ({type})",
+    "typeAdult": "Adulto",
+    "typeChild": "Niño",
+    "typeInfant": "Bebé",
+    "firstName": "Nombre",
+    "lastName": "Apellidos",
+    "dateOfBirth": "Fecha de nacimiento",
+    "gender": "Sexo",
+    "genderMale": "Hombre",
+    "genderFemale": "Mujer",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "passportSection": "Pasaporte",
+    "passportNumber": "Número de pasaporte",
+    "passportExpiry": "Fecha de caducidad",
+    "passportIssuanceCountry": "País de emisión (código de 2 letras)",
+    "nationality": "Nacionalidad (código de 2 letras)",
+    "submit": "Guardar pasajeros",
+    "submitting": "Guardando…",
+    "success": "Datos de los pasajeros guardados. El pago estará disponible en la Fase 4.",
+    "sessionExpired": "Tu reserva ha caducado o no se ha iniciado. Vuelve a buscar un vuelo.",
+    "backToSearch": "← Volver a la búsqueda",
+    "genericError": "No se pudieron guardar los datos. Inténtalo de nuevo."
   }
 }

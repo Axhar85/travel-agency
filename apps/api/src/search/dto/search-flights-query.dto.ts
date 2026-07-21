@@ -14,6 +14,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import { parseUtcTimestamp, todayUtcMidnight } from '../../common/date.utils';
 
 export enum CabinClassDto {
   ECONOMY = 'ECONOMY',
@@ -30,16 +31,8 @@ function toUppercase({ value }: { value: unknown }): unknown {
 class IsTodayOrFutureConstraint implements ValidatorConstraintInterface {
   validate(value: string): boolean {
     if (typeof value !== 'string') return false;
-    const parsed = new Date(value);
-    if (Number.isNaN(parsed.getTime())) return false;
-    // Compare in UTC on both sides — a date-only string like "2026-08-01" is
-    // parsed as UTC midnight per the ECMAScript spec, but the server's local
-    // timezone could be ahead or behind UTC, so deriving "today" via
-    // setHours (local time) can accept/reject the wrong calendar day
-    // depending on where the process happens to run.
-    const now = new Date();
-    const todayUtc = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-    return parsed.getTime() >= todayUtc;
+    const parsed = parseUtcTimestamp(value);
+    return parsed !== null && parsed >= todayUtcMidnight();
   }
   defaultMessage(): string {
     return 'departureDate must not be in the past';

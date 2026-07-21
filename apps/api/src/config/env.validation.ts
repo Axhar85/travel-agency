@@ -79,6 +79,20 @@ class EnvironmentVariables {
   @IsString()
   @IsOptional()
   STRIPE_WEBHOOK_SECRET: string = '';
+
+  // Signs the booking-session cookie. Unlike Amadeus/Stripe secrets above,
+  // this is exercised on every request once session middleware is wired up,
+  // so it has no silent empty-string fallback — a missing/weak value here
+  // would be a real security hole, not just a broken integration.
+  @IsString()
+  SESSION_SECRET: string;
+
+  // How long an abandoned booking-in-progress (priced offer + passenger
+  // details entered so far) survives in Redis before the session expires.
+  @IsInt()
+  @Min(60)
+  @IsOptional()
+  BOOKING_SESSION_TTL_SECONDS: number = 1800;
 }
 
 export function validateEnv(
