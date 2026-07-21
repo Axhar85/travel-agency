@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "@/i18n/navigation";
-import { ApiError, priceOffer, searchFlights } from "@/lib/api";
+import { Link, useRouter } from "@/i18n/navigation";
+import { ApiError, priceOffer, searchFlights, startBooking } from "@/lib/api";
 import type { FlightOffer, PricedOffer } from "@/lib/types";
 import { OfferCard } from "./offer-card";
 import { OfferSkeleton } from "./offer-skeleton";
@@ -39,6 +39,7 @@ function totalStops(offer: FlightOffer): number {
 
 export function SearchResults(props: SearchResultsProps) {
   const t = useTranslations("SearchResults");
+  const router = useRouter();
   const { origin, destination, departureDate, returnDate, adults, childCount, infants, cabinClass } = props;
 
   const [offers, setOffers] = useState<FlightOffer[] | null>(null);
@@ -49,7 +50,8 @@ export function SearchResults(props: SearchResultsProps) {
   const [selectedOffer, setSelectedOffer] = useState<FlightOffer | null>(null);
   const [pricedOffer, setPricedOffer] = useState<PricedOffer | null>(null);
   const [pricingError, setPricingError] = useState<string | null>(null);
-  const [bookingMessage, setBookingMessage] = useState<string | null>(null);
+  const [startingBooking, setStartingBooking] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
 
   useEffect(() => {
     // Standard "fetch on dependency change" effect (see
@@ -100,7 +102,21 @@ export function SearchResults(props: SearchResultsProps) {
     setSelectedOffer(null);
     setPricedOffer(null);
     setPricingError(null);
-    setBookingMessage(null);
+    setBookingError(null);
+  }
+
+  async function handleContinue() {
+    if (!pricedOffer) return;
+    setStartingBooking(true);
+    setBookingError(null);
+    try {
+      await startBooking({ offerId: pricedOffer.id, adults, children: childCount, infants });
+      router.push(`/booking/passengers`);
+    } catch (err) {
+      setBookingError(err instanceof ApiError ? err.message : t("genericError"));
+    } finally {
+      setStartingBooking(false);
+    }
   }
 
   if (selectedOffer) {
@@ -116,15 +132,16 @@ export function SearchResults(props: SearchResultsProps) {
           <PriceConfirmation
             pricedOffer={pricedOffer}
             onBack={handleBackToResults}
-            onContinue={() => setBookingMessage(t("bookingComingSoon"))}
+            onContinue={handleContinue}
+            isContinuing={startingBooking}
           />
         )}
-        {bookingMessage && (
-          <div className="rounded-lg border border-zinc-300 bg-zinc-50 p-3 text-sm text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-            {bookingMessage}
+        {bookingError && (
+          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+            {bookingError}
           </div>
         )}
-        {(pricingError || bookingMessage) && (
+        {(pricingError || bookingError) && (
           <button
             type="button"
             onClick={handleBackToResults}
