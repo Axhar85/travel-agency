@@ -1,4 +1,4 @@
-import type { PricedOffer, SearchFlightsResponse } from "./types";
+import type { BookingSessionData, Passenger, PricedOffer, SearchFlightsResponse } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -66,4 +66,55 @@ export async function priceOffer(offerId: string): Promise<PricedOffer> {
   }
 
   return (await response.json()) as PricedOffer;
+}
+
+export interface StartBookingQuery {
+  offerId: string;
+  adults: number;
+  children?: number;
+  infants?: number;
+}
+
+// The booking session lives server-side behind an httpOnly cookie -
+// `credentials: "include"` is required on every booking call so the browser
+// sends/accepts that cookie across the frontend/backend origins.
+
+export async function startBooking(query: StartBookingQuery): Promise<BookingSessionData> {
+  const response = await fetch(`${API_URL}/booking/start`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(query),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as BookingSessionData;
+}
+
+export async function getBookingState(): Promise<BookingSessionData> {
+  const response = await fetch(`${API_URL}/booking/state`, { credentials: "include", cache: "no-store" });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as BookingSessionData;
+}
+
+export async function submitPassengers(passengers: Passenger[]): Promise<BookingSessionData> {
+  const response = await fetch(`${API_URL}/booking/passengers`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ passengers }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as BookingSessionData;
 }
