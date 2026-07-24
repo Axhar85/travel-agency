@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { ApiError, getBookingState, submitPassengers } from "@/lib/api";
+import { getBookingState, submitPassengers } from "@/lib/api";
 import type { BookingSessionData, Passenger, PassengerType } from "@/lib/types";
 import { PassengerForm } from "./passenger-form";
 
@@ -75,8 +75,12 @@ export function PassengerDetailsForm() {
     try {
       await submitPassengers(passengers);
       setSuccess(true);
-    } catch (err) {
-      setSubmitError(err instanceof ApiError ? err.message : t("genericError"));
+    } catch {
+      // Backend validation messages are English-only and written for
+      // developers (e.g. "firstName must match IATA format"), not
+      // localized customer copy - client-side required/pattern validation
+      // on each field should catch most mistakes before this is ever hit.
+      setSubmitError(t("genericError"));
     } finally {
       setSubmitting(false);
     }

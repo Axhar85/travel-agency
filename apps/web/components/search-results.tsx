@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
-import { ApiError, priceOffer, searchFlights, startBooking } from "@/lib/api";
+import { priceOffer, searchFlights, startBooking } from "@/lib/api";
 import type { FlightOffer, PricedOffer } from "@/lib/types";
 import { OfferCard } from "./offer-card";
 import { OfferSkeleton } from "./offer-skeleton";
@@ -67,9 +67,11 @@ export function SearchResults(props: SearchResultsProps) {
       .then((result) => {
         if (!cancelled) setOffers(result.offers);
       })
-      .catch((err: unknown) => {
-        if (cancelled) return;
-        setError(err instanceof ApiError ? err.message : t("genericError"));
+      .catch(() => {
+        // Backend error messages are English-only prose, not localized -
+        // always show our own translated copy instead of leaking raw
+        // backend text into a Spanish (or any non-English) page.
+        if (!cancelled) setError(t("genericError"));
       });
 
     return () => {
@@ -93,8 +95,8 @@ export function SearchResults(props: SearchResultsProps) {
     setPricingError(null);
     try {
       setPricedOffer(await priceOffer(offer.id));
-    } catch (err) {
-      setPricingError(err instanceof ApiError ? err.message : t("genericError"));
+    } catch {
+      setPricingError(t("genericError"));
     }
   }
 
@@ -112,8 +114,8 @@ export function SearchResults(props: SearchResultsProps) {
     try {
       await startBooking({ offerId: pricedOffer.id, adults, children: childCount, infants });
       router.push(`/booking/passengers`);
-    } catch (err) {
-      setBookingError(err instanceof ApiError ? err.message : t("genericError"));
+    } catch {
+      setBookingError(t("genericError"));
     } finally {
       setStartingBooking(false);
     }
