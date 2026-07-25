@@ -18,7 +18,7 @@ export class BookingController {
   }
 
   @Get('state')
-  getState(@Req() req: Request): BookingSessionData {
+  getState(@Req() req: Request): Promise<BookingSessionData> {
     return this.bookingService.getState(req.session);
   }
 
@@ -26,7 +26,7 @@ export class BookingController {
   submitPassengers(
     @Req() req: Request,
     @Body() dto: SubmitPassengersDto,
-  ): BookingSessionData {
+  ): Promise<BookingSessionData> {
     return this.bookingService.submitPassengers(req.session, dto);
   }
 }

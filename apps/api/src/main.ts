@@ -6,11 +6,17 @@ import session from 'express-session';
 import type Redis from 'ioredis';
 import { AmadeusExceptionFilter } from './amadeus/filters/amadeus-exception.filter';
 import { AppModule } from './app.module';
+import { PaymentsExceptionFilter } from './payments/filters/payments-exception.filter';
 import { REDIS_CLIENT } from './redis/redis.constants';
 import { RedisSessionStore } from './session/redis-session.store';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // rawBody: true preserves the raw request buffer alongside the normally
+  // parsed body - the Stripe webhook needs the exact raw bytes to verify
+  // the signature, which parsing-then-reserializing cannot reproduce.
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+  });
   const config = app.get(ConfigService);
   const isProduction = config.get<string>('NODE_ENV') === 'production';
 
@@ -56,7 +62,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.useGlobalFilters(new AmadeusExceptionFilter());
+  app.useGlobalFilters(
+    new AmadeusExceptionFilter(),
+    new PaymentsExceptionFilter(),
+  );
 
   const port = config.get<number>('PORT', 4000);
   await app.listen(port);

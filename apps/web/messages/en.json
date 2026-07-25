@@ -79,9 +79,20 @@
     "nationality": "Nationality (2-letter code)",
     "submit": "Save passengers",
     "submitting": "Saving…",
-    "success": "Passenger details saved. Payment will be available in Phase 4.",
     "sessionExpired": "Your booking has expired or was never started. Please search again.",
     "backToSearch": "← Back to search",
     "genericError": "We couldn't save your details. Please try again."
+  },
+  "Payment": {
+    "title": "Payment",
+    "loading": "Loading…",
+    "amountLabel": "Amount to charge: {amount} {currency}",
+    "pay": "Pay",
+    "processing": "Processing…",
+    "authorizedMessage": "Your payment has been authorized. We'll confirm your booking shortly.",
+    "sessionExpired": "Your booking has expired or was never started. Please search again.",
+    "backToSearch": "← Back to search",
+    "retry": "Try again",
+    "genericError": "We couldn't process the payment. Please try again."
   }
 }

@@ -79,9 +79,20 @@
     "nationality": "Nacionalidad (código de 2 letras)",
     "submit": "Guardar pasajeros",
     "submitting": "Guardando…",
-    "success": "Datos de los pasajeros guardados. El pago estará disponible en la Fase 4.",
     "sessionExpired": "Tu reserva ha caducado o no se ha iniciado. Vuelve a buscar un vuelo.",
     "backToSearch": "← Volver a la búsqueda",
     "genericError": "No se pudieron guardar los datos. Inténtalo de nuevo."
+  },
+  "Payment": {
+    "title": "Pago",
+    "loading": "Cargando…",
+    "amountLabel": "Importe a pagar: {amount} {currency}",
+    "pay": "Pagar",
+    "processing": "Procesando…",
+    "authorizedMessage": "Tu pago se ha autorizado correctamente. Confirmaremos tu reserva en breve.",
+    "sessionExpired": "Tu reserva ha caducado o no se ha iniciado. Vuelve a buscar un vuelo.",
+    "backToSearch": "← Volver a la búsqueda",
+    "retry": "Intentar de nuevo",
+    "genericError": "No se pudo procesar el pago. Inténtalo de nuevo."
   }
 }

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { getBookingState, submitPassengers } from "@/lib/api";
 import type { BookingSessionData, Passenger, PassengerType } from "@/lib/types";
 import { PassengerForm } from "./passenger-form";
@@ -37,6 +37,7 @@ function buildInitialPassengers(counts: BookingSessionData["passengerCounts"]): 
 
 export function PassengerDetailsForm() {
   const t = useTranslations("PassengerForm");
+  const router = useRouter();
 
   const [booking, setBooking] = useState<BookingSessionData | null>(null);
   // Any load failure here is shown as "your booking expired, search again"
@@ -46,7 +47,6 @@ export function PassengerDetailsForm() {
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -74,7 +74,7 @@ export function PassengerDetailsForm() {
     setSubmitError(null);
     try {
       await submitPassengers(passengers);
-      setSuccess(true);
+      router.push("/booking/payment");
     } catch {
       // Backend validation messages are English-only and written for
       // developers (e.g. "firstName must match IATA format"), not
@@ -101,16 +101,6 @@ export function PassengerDetailsForm() {
 
   if (!booking) {
     return <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("loading")}</p>;
-  }
-
-  if (success) {
-    return (
-      <div className="flex w-full max-w-2xl flex-col gap-4">
-        <div className="rounded-lg border border-green-300 bg-green-50 p-3 text-sm text-green-900 dark:border-green-700 dark:bg-green-950 dark:text-green-200">
-          {t("success")}
-        </div>
-      </div>
-    );
   }
 
   return (

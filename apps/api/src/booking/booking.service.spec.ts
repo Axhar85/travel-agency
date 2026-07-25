@@ -1,6 +1,7 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { AmadeusService } from '../amadeus/amadeus.service';
 import { PricedOffer } from '../amadeus/interfaces/gds-client.interface';
+import { PaymentsService } from '../payments/payments.service';
 import { BookingService } from './booking.service';
 import { RequestSession } from './booking-session.types';
 import { StartBookingDto } from './dto/start-booking.dto';
@@ -39,8 +40,11 @@ describe('BookingService', () => {
     const amadeusService = {
       priceOffer: jest.fn().mockResolvedValue(pricedOffer),
     } as unknown as AmadeusService;
-    const service = new BookingService(amadeusService);
-    return { service, amadeusService };
+    const paymentsService = {
+      refreshPaymentStatus: jest.fn().mockResolvedValue(undefined),
+    } as unknown as PaymentsService;
+    const service = new BookingService(amadeusService, paymentsService);
+    return { service, amadeusService, paymentsService };
   }
 
   it('startBooking re-prices the offer and stores the booking in the session', async () => {
@@ -65,11 +69,11 @@ describe('BookingService', () => {
     expect(session.booking).toEqual(result);
   });
 
-  it('getState throws NotFoundException when no booking is in progress', () => {
+  it('getState throws NotFoundException when no booking is in progress', async () => {
     const { service } = buildService();
     const session = buildSession();
 
-    expect(() => service.getState(session)).toThrow(NotFoundException);
+    await expect(service.getState(session)).rejects.toThrow(NotFoundException);
   });
 
   it('getState returns the stored booking', async () => {
@@ -77,7 +81,8 @@ describe('BookingService', () => {
     const session = buildSession();
     await service.startBooking(session, { offerId: 'offer-1', adults: 1 });
 
-    expect(service.getState(session).step).toBe('passengers');
+    const state = await service.getState(session);
+    expect(state.step).toBe('passengers');
   });
 
   it('submitPassengers stores passengers and advances the step when counts match', async () => {
@@ -95,7 +100,7 @@ describe('BookingService', () => {
       ],
     };
 
-    const result = service.submitPassengers(session, dto);
+    const result = await service.submitPassengers(session, dto);
 
     expect(result.step).toBe('review');
     expect(result.passengers).toHaveLength(2);
@@ -108,7 +113,7 @@ describe('BookingService', () => {
     await service.startBooking(session, { offerId: 'offer-1', adults: 2 });
     const dto: SubmitPassengersDto = { passengers: [buildAdult()] };
 
-    expect(() => service.submitPassengers(session, dto)).toThrow(
+    await expect(service.submitPassengers(session, dto)).rejects.toThrow(
       BadRequestException,
     );
   });
@@ -126,17 +131,17 @@ describe('BookingService', () => {
       passengers: [buildAdult(), buildAdult()],
     };
 
-    expect(() => service.submitPassengers(session, dto)).toThrow(
+    await expect(service.submitPassengers(session, dto)).rejects.toThrow(
       BadRequestException,
     );
   });
 
-  it('submitPassengers throws NotFoundException if called before startBooking', () => {
+  it('submitPassengers throws NotFoundException if called before startBooking', async () => {
     const { service } = buildService();
     const session = buildSession();
 
-    expect(() =>
+    await expect(
       service.submitPassengers(session, { passengers: [buildAdult()] }),
-    ).toThrow(NotFoundException);
+    ).rejects.toThrow(NotFoundException);
   });
 });

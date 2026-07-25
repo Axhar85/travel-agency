@@ -80,6 +80,16 @@ class EnvironmentVariables {
   @IsOptional()
   STRIPE_WEBHOOK_SECRET: string = '';
 
+  // How long a payment's own Redis record survives - independent of the
+  // booking session TTL, since it's keyed by Stripe PaymentIntent id (not
+  // session id) and is written to by the webhook with no session in play.
+  // Comfortably longer than Stripe's own 7-day auto-cancellation window for
+  // uncaptured manual-capture PaymentIntents.
+  @IsInt()
+  @Min(60)
+  @IsOptional()
+  PAYMENT_RECORD_TTL_SECONDS: number = 691_200; // 8 days
+
   // Signs the booking-session cookie. Unlike Amadeus/Stripe secrets above,
   // this is exercised on every request once session middleware is wired up,
   // so it has no silent empty-string fallback — a missing/weak value here

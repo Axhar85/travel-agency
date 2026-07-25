@@ -1,4 +1,4 @@
-import type { BookingSessionData, Passenger, PricedOffer, SearchFlightsResponse } from "./types";
+import type { BookingSessionData, Passenger, PaymentIntentResult, PricedOffer, SearchFlightsResponse } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -117,4 +117,17 @@ export async function submitPassengers(passengers: Passenger[]): Promise<Booking
   }
 
   return (await response.json()) as BookingSessionData;
+}
+
+export async function createPaymentIntent(): Promise<PaymentIntentResult> {
+  const response = await fetch(`${API_URL}/payments/intent`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as PaymentIntentResult;
 }

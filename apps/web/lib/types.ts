@@ -93,11 +93,26 @@ export interface Passenger {
   document?: PassengerDocument;
 }
 
-export type BookingStep = "passengers" | "review";
+export type BookingStep = "passengers" | "review" | "payment" | "payment_authorized" | "payment_failed";
+
+export type PaymentStatus = "requires_payment" | "requires_action" | "authorized" | "canceled" | "failed";
+
+export interface BookingPaymentPointer {
+  paymentIntentId: string;
+  status: PaymentStatus;
+}
 
 export interface BookingSessionData {
   pricedOffer: PricedOffer;
   passengerCounts: PassengerCounts;
   passengers: Passenger[];
   step: BookingStep;
+  payment?: BookingPaymentPointer;
+}
+
+export interface PaymentIntentResult {
+  clientSecret: string | null;
+  amountMinorUnits: number;
+  currency: string;
+  status: PaymentStatus;
 }

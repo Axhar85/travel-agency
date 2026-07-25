@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AmadeusService } from '../amadeus/amadeus.service';
+import { PaymentsService } from '../payments/payments.service';
 import {
   BookingSessionData,
   PassengerCounts,
@@ -14,7 +15,10 @@ import { SubmitPassengersDto } from './dto/submit-passengers.dto';
 
 @Injectable()
 export class BookingService {
-  constructor(private readonly amadeusService: AmadeusService) {}
+  constructor(
+    private readonly amadeusService: AmadeusService,
+    private readonly paymentsService: PaymentsService,
+  ) {}
 
   async startBooking(
     session: RequestSession,
@@ -41,20 +45,24 @@ export class BookingService {
     return booking;
   }
 
-  getState(session: RequestSession): BookingSessionData {
+  async getState(session: RequestSession): Promise<BookingSessionData> {
     if (!session.booking) {
       throw new NotFoundException(
         'No booking in progress — start a new search.',
       );
     }
+    // Payment status only ever changes via Stripe's webhook, which has no
+    // session cookie to update it with directly - refresh from the Redis
+    // record of truth on every read instead (see PaymentsService).
+    await this.paymentsService.refreshPaymentStatus(session);
     return session.booking;
   }
 
-  submitPassengers(
+  async submitPassengers(
     session: RequestSession,
     dto: SubmitPassengersDto,
-  ): BookingSessionData {
-    const booking = this.getState(session);
+  ): Promise<BookingSessionData> {
+    const booking = await this.getState(session);
     const expectedTotal =
       booking.passengerCounts.adults +
       booking.passengerCounts.children +

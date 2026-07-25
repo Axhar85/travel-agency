@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { BookingModule } from './booking/booking.module';
 import { validateEnv } from './config/env.validation';
 import { HealthModule } from './health/health.module';
+import { PaymentsModule } from './payments/payments.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
 import { SearchModule } from './search/search.module';
@@ -21,6 +22,7 @@ import { SearchModule } from './search/search.module';
     AmadeusModule,
     HealthModule,
     SearchModule,
+    PaymentsModule,
     BookingModule,
   ],
   controllers: [AppController],
