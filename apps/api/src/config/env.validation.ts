@@ -90,6 +90,20 @@ class EnvironmentVariables {
   @IsOptional()
   PAYMENT_RECORD_TTL_SECONDS: number = 691_200; // 8 days
 
+  // bcrypt hash of the admin panel password - never a plaintext password.
+  // Generate via `npm run admin:hash-password -- "your-password"`. Empty at
+  // boot is allowed (same pattern as Amadeus/Stripe secrets) - login simply
+  // always fails until it's set, rather than blocking the app from starting.
+  @IsString()
+  @IsOptional()
+  ADMIN_PASSWORD_HASH: string = '';
+
+  // Image storage for owner-uploaded promotion posters. Empty at boot is
+  // allowed - only the upload endpoint fails until it's set.
+  @IsString()
+  @IsOptional()
+  BLOB_READ_WRITE_TOKEN: string = '';
+
   // Signs the booking-session cookie. Unlike Amadeus/Stripe secrets above,
   // this is exercised on every request once session middleware is wired up,
   // so it has no silent empty-string fallback — a missing/weak value here
@@ -118,6 +132,22 @@ export function validateEnv(
       .map((error) => Object.values(error.constraints ?? {}).join(', '))
       .join('; ');
     throw new Error(`Invalid environment configuration: ${messages}`);
+  }
+
+  // Two independent Redis caches sit on top of each other: SearchService
+  // caches full search responses (which embed offer ids), OfferCacheService
+  // caches the raw offers those ids point to. If the search-response TTL
+  // ever outlived the offer TTL, a "fresh-looking" cached search result
+  // could reference an offer id that's already expired, turning a normal
+  // priceOffer() call into a confusing OfferExpiredError. Not expressible
+  // as a single-field class-validator decorator, so it's checked here.
+  if (
+    validated.SEARCH_RESULTS_CACHE_TTL_SECONDS >
+    validated.AMADEUS_OFFER_CACHE_TTL_SECONDS
+  ) {
+    throw new Error(
+      `Invalid environment configuration: SEARCH_RESULTS_CACHE_TTL_SECONDS (${validated.SEARCH_RESULTS_CACHE_TTL_SECONDS}) must not be greater than AMADEUS_OFFER_CACHE_TTL_SECONDS (${validated.AMADEUS_OFFER_CACHE_TTL_SECONDS}), or cached search results could reference already-expired offer ids.`,
+    );
   }
 
   return validated;

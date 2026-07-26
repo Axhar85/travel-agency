@@ -1,7 +1,9 @@
 {
   "HomePage": {
+    "tagline": "Specialists in Pakistan, India, Bangladesh, the Philippines, and Hajj & Umrah travel",
     "title": "Flights at the best price, no surprises",
-    "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place."
+    "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place.",
+    "popularRoutes": "Popular routes"
   },
   "LocaleSwitcher": {
     "es": "Español",
@@ -94,5 +96,31 @@
     "backToSearch": "← Back to search",
     "retry": "Try again",
     "genericError": "We couldn't process the payment. Please try again."
+  },
+  "Admin": {
+    "loginTitle": "Admin login",
+    "password": "Password",
+    "login": "Log in",
+    "loggingIn": "Logging in…",
+    "loginError": "Incorrect password or too many attempts. Please try again.",
+    "promotionsTitle": "Promotions",
+    "uploadTitle": "Upload a new promotion",
+    "image": "Image",
+    "promotionTitleLabel": "Title (optional)",
+    "linkUrl": "Link (optional)",
+    "upload": "Upload",
+    "uploading": "Uploading…",
+    "uploadError": "We couldn't upload the image. Please try again.",
+    "loading": "Loading…",
+    "loadError": "We couldn't load the promotions.",
+    "noPromotions": "No promotions yet.",
+    "untitled": "Untitled",
+    "active": "Visible",
+    "inactive": "Hidden",
+    "show": "Show",
+    "hide": "Hide",
+    "delete": "Delete",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
   }
 }

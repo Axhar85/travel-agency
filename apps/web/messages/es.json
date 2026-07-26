@@ -1,7 +1,9 @@
 {
   "HomePage": {
+    "tagline": "Especialistas en Pakistán, India, Bangladés, Filipinas y viajes de Hach y Umrah",
     "title": "Vuelos al mejor precio, sin sorpresas",
-    "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio."
+    "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio.",
+    "popularRoutes": "Rutas populares"
   },
   "LocaleSwitcher": {
     "es": "Español",
@@ -94,5 +96,31 @@
     "backToSearch": "← Volver a la búsqueda",
     "retry": "Intentar de nuevo",
     "genericError": "No se pudo procesar el pago. Inténtalo de nuevo."
+  },
+  "Admin": {
+    "loginTitle": "Acceso de administración",
+    "password": "Contraseña",
+    "login": "Entrar",
+    "loggingIn": "Entrando…",
+    "loginError": "Contraseña incorrecta o demasiados intentos. Inténtalo de nuevo.",
+    "promotionsTitle": "Promociones",
+    "uploadTitle": "Subir nueva promoción",
+    "image": "Imagen",
+    "promotionTitleLabel": "Título (opcional)",
+    "linkUrl": "Enlace (opcional)",
+    "upload": "Subir",
+    "uploading": "Subiendo…",
+    "uploadError": "No se pudo subir la imagen. Inténtalo de nuevo.",
+    "loading": "Cargando…",
+    "loadError": "No se pudieron cargar las promociones.",
+    "noPromotions": "Todavía no hay promociones.",
+    "untitled": "Sin título",
+    "active": "Visible",
+    "inactive": "Oculta",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "delete": "Eliminar",
+    "moveUp": "Subir posición",
+    "moveDown": "Bajar posición"
   }
 }

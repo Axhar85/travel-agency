@@ -6,6 +6,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { getBookingState, submitPassengers } from "@/lib/api";
 import type { BookingSessionData, Passenger, PassengerType } from "@/lib/types";
 import { PassengerForm } from "./passenger-form";
+import { Button } from "./ui/button";
 
 function emptyPassenger(type: PassengerType): Passenger {
   return {
@@ -92,7 +93,7 @@ export function PassengerDetailsForm() {
         <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
           {t("sessionExpired")}
         </div>
-        <Link href="/" className="self-start text-sm font-medium text-black underline dark:text-white">
+        <Link href="/" className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300">
           {t("backToSearch")}
         </Link>
       </div>
@@ -123,13 +124,9 @@ export function PassengerDetailsForm() {
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background disabled:opacity-50 sm:w-auto sm:self-start"
-      >
+      <Button type="submit" disabled={submitting} className="w-full sm:w-auto sm:self-start">
         {submitting ? t("submitting") : t("submit")}
-      </button>
+      </Button>
     </form>
   );
 }

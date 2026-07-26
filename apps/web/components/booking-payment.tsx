@@ -75,7 +75,7 @@ export function BookingPayment() {
         <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
           {t("sessionExpired")}
         </div>
-        <Link href="/" className="self-start text-sm font-medium text-black underline dark:text-white">
+        <Link href="/" className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300">
           {t("backToSearch")}
         </Link>
       </div>
@@ -106,7 +106,7 @@ export function BookingPayment() {
             // rather than re-checking the same failed intent.
             window.location.href = window.location.pathname;
           }}
-          className="self-start text-sm font-medium text-black underline dark:text-white"
+          className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300"
         >
           {t("retry")}
         </button>
@@ -117,7 +117,7 @@ export function BookingPayment() {
   return (
     <div className="flex w-full max-w-md flex-col gap-4">
       <h1 className="text-xl font-semibold text-black dark:text-white">{t("title")}</h1>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-lg font-semibold text-accent-700 dark:text-accent-400">
         {t("amountLabel", { amount, currency })}
       </p>
       {clientSecret && (

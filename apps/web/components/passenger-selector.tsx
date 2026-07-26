@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { CabinClass } from "@/lib/types";
+import { inputClass, labelClass } from "@/lib/ui";
 
 export interface PassengerCounts {
   adults: number;
@@ -47,7 +48,7 @@ function Counter({
           disabled={count <= min}
           onClick={onDecrement}
           aria-label={`decrease ${label}`}
-          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-black disabled:opacity-30 dark:border-zinc-600 dark:text-white"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 transition-colors hover:border-primary-300 hover:bg-primary-50 disabled:opacity-30 disabled:hover:bg-transparent dark:border-zinc-600 dark:text-primary-300 dark:hover:bg-primary-900/40"
         >
           −
         </button>
@@ -57,7 +58,7 @@ function Counter({
           disabled={count >= max}
           onClick={onIncrement}
           aria-label={`increase ${label}`}
-          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-black disabled:opacity-30 dark:border-zinc-600 dark:text-white"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 transition-colors hover:border-primary-300 hover:bg-primary-50 disabled:opacity-30 disabled:hover:bg-transparent dark:border-zinc-600 dark:text-primary-300 dark:hover:bg-primary-900/40"
         >
           +
         </button>
@@ -92,11 +93,11 @@ export function PassengerSelector({ value, onChange }: PassengerSelectorProps) {
 
   return (
     <div ref={containerRef} className="relative flex flex-col gap-1">
-      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{t("passengers")}</span>
+      <span className={labelClass}>{t("passengers")}</span>
       <button
         type="button"
         onClick={() => setIsOpen((open) => !open)}
-        className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-left text-sm text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+        className={`text-left ${inputClass}`}
       >
         {totalPassengers} · {t(`cabinClasses.${value.cabinClass}`)}
       </button>
@@ -134,7 +135,7 @@ export function PassengerSelector({ value, onChange }: PassengerSelectorProps) {
             <select
               value={value.cabinClass}
               onChange={(event) => update({ cabinClass: event.target.value as CabinClass })}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-2 py-1.5 text-sm text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+              className={`w-full py-1.5 ${inputClass}`}
             >
               {CABIN_CLASSES.map((cabinClass) => (
                 <option key={cabinClass} value={cabinClass}>
@@ -147,7 +148,7 @@ export function PassengerSelector({ value, onChange }: PassengerSelectorProps) {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="w-full rounded-lg bg-foreground px-3 py-1.5 text-sm font-medium text-background"
+              className="w-full rounded-lg bg-primary-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-400"
             >
               {t("done")}
             </button>

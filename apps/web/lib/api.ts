@@ -1,4 +1,11 @@
-import type { BookingSessionData, Passenger, PaymentIntentResult, PricedOffer, SearchFlightsResponse } from "./types";
+import type {
+  BookingSessionData,
+  Passenger,
+  PaymentIntentResult,
+  PricedOffer,
+  Promotion,
+  SearchFlightsResponse,
+} from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -130,4 +137,95 @@ export async function createPaymentIntent(): Promise<PaymentIntentResult> {
   }
 
   return (await response.json()) as PaymentIntentResult;
+}
+
+export async function getPromotions(): Promise<Promotion[]> {
+  const response = await fetch(`${API_URL}/promotions`, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as Promotion[];
+}
+
+export async function adminLogin(password: string): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/login`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+export async function getAllPromotions(): Promise<Promotion[]> {
+  const response = await fetch(`${API_URL}/admin/promotions`, { credentials: "include", cache: "no-store" });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as Promotion[];
+}
+
+export async function createPromotion(image: File, title: string, linkUrl: string): Promise<Promotion> {
+  const formData = new FormData();
+  formData.set("image", image);
+  if (title) formData.set("title", title);
+  if (linkUrl) formData.set("linkUrl", linkUrl);
+
+  const response = await fetch(`${API_URL}/admin/promotions`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as Promotion;
+}
+
+export async function updatePromotion(id: string, patch: { isActive?: boolean }): Promise<Promotion> {
+  const response = await fetch(`${API_URL}/admin/promotions/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as Promotion;
+}
+
+export async function deletePromotion(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/promotions/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+export async function reorderPromotions(orderedIds: string[]): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/promotions/reorder`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderedIds }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
 }
