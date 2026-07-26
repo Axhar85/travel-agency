@@ -6,12 +6,15 @@ export interface Airport {
 }
 
 /**
- * Curated list of major airports, weighted toward Spain (our home market)
- * plus the busiest European and global hubs. Not exhaustive — good enough
- * for autocomplete on the common routes a Madrid-based agency actually
- * sells. City/country names are bilingual (es/en) since Spanish is the
- * primary locale and several major cities have distinct Spanish names
- * (Londres, Múnich, Nueva York, El Cairo, ...).
+ * Curated list of major airports, weighted toward Spain (our home market),
+ * the busiest European/global hubs, and — deliberately — Pakistan,
+ * Bangladesh, the Philippines, and the Hajj/Umrah gateways (Jeddah,
+ * Madinah), since this agency's core business is Spain-based South Asian/
+ * Filipino diaspora travel plus pilgrimage travel, not generic tourism. Not
+ * exhaustive — good enough for autocomplete on the routes this agency
+ * actually sells. City/country names are bilingual (es/en) since Spanish is
+ * the primary locale and several major cities have distinct Spanish names
+ * (Londres, Múnich, Nueva York, El Cairo, Yeda, ...).
  */
 export const airports: Airport[] = [
   // Spain
@@ -110,6 +113,10 @@ export const airports: Airport[] = [
   { code: 'DXB', city: { es: 'Dubái', en: 'Dubai' }, country: { es: 'Emiratos Árabes Unidos', en: 'United Arab Emirates' }, name: 'Dubai International' },
   { code: 'DOH', city: { es: 'Doha', en: 'Doha' }, country: { es: 'Catar', en: 'Qatar' }, name: 'Hamad International' },
   { code: 'AUH', city: { es: 'Abu Dabi', en: 'Abu Dhabi' }, country: { es: 'Emiratos Árabes Unidos', en: 'United Arab Emirates' }, name: 'Abu Dhabi' },
+  // Hajj/Umrah gateways - Mecca itself has no airport, pilgrims fly into
+  // Jeddah (nearest to Mecca) or Madinah (for the Prophet's Mosque).
+  { code: 'JED', city: { es: 'Yeda', en: 'Jeddah' }, country: { es: 'Arabia Saudí', en: 'Saudi Arabia' }, name: 'King Abdulaziz International' },
+  { code: 'MED', city: { es: 'Medina', en: 'Madinah' }, country: { es: 'Arabia Saudí', en: 'Saudi Arabia' }, name: 'Prince Mohammad Bin Abdulaziz International' },
   { code: 'TLV', city: { es: 'Tel Aviv', en: 'Tel Aviv' }, country: { es: 'Israel', en: 'Israel' }, name: 'Ben Gurion' },
   { code: 'CAI', city: { es: 'El Cairo', en: 'Cairo' }, country: { es: 'Egipto', en: 'Egypt' }, name: 'Cairo' },
   { code: 'CMN', city: { es: 'Casablanca', en: 'Casablanca' }, country: { es: 'Marruecos', en: 'Morocco' }, name: 'Casablanca Mohammed V' },
@@ -128,6 +135,11 @@ export const airports: Airport[] = [
   { code: 'ICN', city: { es: 'Seúl', en: 'Seoul' }, country: { es: 'Corea del Sur', en: 'South Korea' }, name: 'Seoul Incheon' },
   { code: 'DEL', city: { es: 'Nueva Delhi', en: 'New Delhi' }, country: { es: 'India', en: 'India' }, name: 'Indira Gandhi' },
   { code: 'BOM', city: { es: 'Bombay', en: 'Mumbai' }, country: { es: 'India', en: 'India' }, name: 'Chhatrapati Shivaji' },
+  { code: 'LHE', city: { es: 'Lahore', en: 'Lahore' }, country: { es: 'Pakistán', en: 'Pakistan' }, name: 'Allama Iqbal International' },
+  { code: 'KHI', city: { es: 'Karachi', en: 'Karachi' }, country: { es: 'Pakistán', en: 'Pakistan' }, name: 'Jinnah International' },
+  { code: 'ISB', city: { es: 'Islamabad', en: 'Islamabad' }, country: { es: 'Pakistán', en: 'Pakistan' }, name: 'Islamabad International' },
+  { code: 'DAC', city: { es: 'Daca', en: 'Dhaka' }, country: { es: 'Bangladés', en: 'Bangladesh' }, name: 'Hazrat Shahjalal International' },
+  { code: 'MNL', city: { es: 'Manila', en: 'Manila' }, country: { es: 'Filipinas', en: 'Philippines' }, name: 'Ninoy Aquino International' },
   { code: 'SYD', city: { es: 'Sídney', en: 'Sydney' }, country: { es: 'Australia', en: 'Australia' }, name: 'Sydney' },
   { code: 'MEL', city: { es: 'Melbourne', en: 'Melbourne' }, country: { es: 'Australia', en: 'Australia' }, name: 'Melbourne' },
   { code: 'AKL', city: { es: 'Auckland', en: 'Auckland' }, country: { es: 'Nueva Zelanda', en: 'New Zealand' }, name: 'Auckland' },

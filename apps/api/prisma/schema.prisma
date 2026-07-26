@@ -1,5 +1,7 @@
-// Prisma schema — datasource wired up now; domain models (Booking, Payment,
-// Passenger, AuditLog, etc.) land in later phases per PROGRESS.md.
+// Prisma schema — datasource wired up in Phase 1; Booking/Payment/Passenger/
+// AuditLog domain models land in later phases per PROGRESS.md. Promotion
+// below is a deliberate early exception: it has no relation to those (no
+// FKs, no shared lifecycle), so adding it now doesn't disturb that plan.
 
 generator client {
   provider = "prisma-client-js"
@@ -8,4 +10,20 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+/// Owner-editable promotional posters shown on the public homepage.
+/// Uploaded via the admin panel (see PromotionsModule) - image bytes live in
+/// Vercel Blob, only the resulting URL is stored here.
+model Promotion {
+  id        String   @id @default(uuid())
+  title     String?
+  imageUrl  String
+  linkUrl   String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
 }

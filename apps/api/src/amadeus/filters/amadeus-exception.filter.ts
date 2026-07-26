@@ -59,17 +59,28 @@ export class AmadeusExceptionFilter implements ExceptionFilter {
     }
 
     if (exception instanceof AmadeusAuthError) {
+      // Also reachable from BookingService's priceOffer() call, not just
+      // search - kept generic rather than saying "search" specifically.
       return {
         status: HttpStatus.SERVICE_UNAVAILABLE,
         message:
-          'Flight search is temporarily unavailable. Please try again shortly.',
+          'This service is temporarily unavailable. Please try again shortly.',
       };
     }
 
     if (exception instanceof AmadeusApiError) {
-      // Amadeus 4xx responses usually mean the search parameters themselves
-      // were rejected (e.g. an unknown airport code) - safe and useful to
-      // tell the client that, without forwarding the raw upstream body.
+      // This filter is global, not search-only - AmadeusApiError also
+      // surfaces from BookingService's priceOffer() call, so the message
+      // can't be phrased as if it's always about a search.
+      if (exception.statusCode === HttpStatus.TOO_MANY_REQUESTS) {
+        // Distinct from a genuinely invalid request - the client did
+        // nothing wrong here, retrying shortly is the correct action.
+        return {
+          status: HttpStatus.TOO_MANY_REQUESTS,
+          message:
+            'Too many requests right now. Please wait a moment and try again.',
+        };
+      }
       if (
         exception.statusCode &&
         exception.statusCode >= 400 &&
@@ -77,13 +88,13 @@ export class AmadeusExceptionFilter implements ExceptionFilter {
       ) {
         return {
           status: HttpStatus.BAD_REQUEST,
-          message: 'Invalid search request.',
+          message: 'Invalid request — please check the details and try again.',
         };
       }
       return {
         status: HttpStatus.BAD_GATEWAY,
         message:
-          'Flight search is temporarily unavailable. Please try again shortly.',
+          'This service is temporarily unavailable. Please try again shortly.',
       };
     }
 

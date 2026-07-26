@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { formatPrice } from "@/lib/format";
 import type { PricedOffer } from "@/lib/types";
+import { Button } from "./ui/button";
 
 interface PriceConfirmationProps {
   pricedOffer: PricedOffer;
@@ -32,27 +33,17 @@ export function PriceConfirmation({ pricedOffer, onBack, onContinue, isContinuin
         </div>
       )}
 
-      <span className="text-2xl font-semibold text-black dark:text-white">
+      <span className="text-2xl font-semibold text-accent-700 dark:text-accent-400">
         {formatPrice(pricedOffer.price.total, pricedOffer.price.currency, locale)}
       </span>
 
       <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={onBack}
-          disabled={isContinuing}
-          className="flex-1 rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-black disabled:opacity-50 dark:border-zinc-700 dark:text-white"
-        >
+        <Button type="button" variant="secondary" onClick={onBack} disabled={isContinuing} className="flex-1 px-5 py-2.5">
           {t("backToResults")}
-        </button>
-        <button
-          type="button"
-          onClick={onContinue}
-          disabled={isContinuing}
-          className="flex-1 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background disabled:opacity-50"
-        >
+        </Button>
+        <Button type="button" onClick={onContinue} disabled={isContinuing} className="flex-1 px-5 py-2.5">
           {isContinuing ? t("startingBooking") : t("continue")}
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { getStripe } from "@/lib/stripe";
+import { Button } from "./ui/button";
 
 interface PaymentFormProps {
   clientSecret: string;
@@ -59,13 +60,9 @@ function CheckoutForm({ onAuthorized }: { onAuthorized: () => void }) {
           {error}
         </div>
       )}
-      <button
-        type="submit"
-        disabled={!stripe || submitting}
-        className="w-full rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background disabled:opacity-50 sm:w-auto sm:self-start"
-      >
+      <Button type="submit" disabled={!stripe || submitting} className="w-full sm:w-auto sm:self-start">
         {submitting ? t("processing") : t("pay")}
-      </button>
+      </Button>
     </form>
   );
 }

@@ -3,6 +3,7 @@
 import { useLocale } from "next-intl";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { airports, type Airport } from "@/data/airports";
+import { inputClass, labelClass } from "@/lib/ui";
 
 function normalize(value: string): string {
   return value
@@ -111,7 +112,7 @@ export function AirportAutocomplete({ label, placeholder, value, onChange, exclu
 
   return (
     <div ref={containerRef} className="relative flex flex-col gap-1">
-      <label htmlFor={inputId} className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+      <label htmlFor={inputId} className={labelClass}>
         {label}
       </label>
       <input
@@ -135,7 +136,7 @@ export function AirportAutocomplete({ label, placeholder, value, onChange, exclu
         }}
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleKeyDown}
-        className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-black outline-none focus:border-black dark:border-zinc-700 dark:bg-black dark:text-white dark:focus:border-white"
+        className={inputClass}
       />
       {isOpen && results.length > 0 && (
         <ul
@@ -151,7 +152,7 @@ export function AirportAutocomplete({ label, placeholder, value, onChange, exclu
                 onClick={() => selectAirport(airport)}
                 onMouseEnter={() => setHighlightedIndex(index)}
                 className={`flex w-full flex-col items-start px-3 py-2 text-left text-sm ${
-                  index === highlightedIndex ? "bg-zinc-100 dark:bg-zinc-800" : ""
+                  index === highlightedIndex ? "bg-primary-50 dark:bg-primary-900/40" : ""
                 }`}
               >
                 <span className="font-medium text-black dark:text-white">

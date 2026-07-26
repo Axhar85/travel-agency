@@ -1,11 +1,21 @@
 const ISO_DURATION_PATTERN = /^PT(?:(\d+)H)?(?:(\d+)M)?$/;
 
-export function formatDuration(isoDuration: string): string {
+/** Parses an ISO 8601 duration like "PT2H30M" (as returned by Amadeus) into hours/minutes, or null if unparseable. */
+export function parseIsoDuration(isoDuration: string): { hours: number; minutes: number } | null {
   const match = ISO_DURATION_PATTERN.exec(isoDuration);
-  if (!match) return isoDuration;
+  if (!match) return null;
+  return {
+    hours: match[1] ? Number(match[1]) : 0,
+    minutes: match[2] ? Number(match[2]) : 0,
+  };
+}
 
-  const hours = match[1] ? `${match[1]}h` : "";
-  const minutes = match[2] ? `${match[2]}m` : "";
+export function formatDuration(isoDuration: string): string {
+  const parsed = parseIsoDuration(isoDuration);
+  if (!parsed) return isoDuration;
+
+  const hours = parsed.hours ? `${parsed.hours}h` : "";
+  const minutes = parsed.minutes ? `${parsed.minutes}m` : "";
   return [hours, minutes].filter(Boolean).join(" ") || "0m";
 }
 

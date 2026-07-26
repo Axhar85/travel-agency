@@ -116,3 +116,15 @@ export interface PaymentIntentResult {
   currency: string;
   status: PaymentStatus;
 }
+
+// Mirrors apps/api/prisma/schema.prisma's Promotion model.
+export interface Promotion {
+  id: string;
+  title: string | null;
+  imageUrl: string;
+  linkUrl: string | null;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { cardClass, inputClass } from "@/lib/ui";
 import type { Passenger, PassengerType } from "@/lib/types";
 
 function toUppercase(value: string): string {
@@ -39,8 +40,8 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
   }
 
   return (
-    <fieldset className="flex flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-      <legend className="px-1 text-sm font-semibold text-black dark:text-white">
+    <fieldset className={`flex flex-col gap-4 p-4 ${cardClass}`}>
+      <legend className="px-1 text-sm font-semibold text-primary-800 dark:text-primary-200">
         {t("passengerLabel", { number: index + 1, type: t(`type${type.charAt(0)}${type.slice(1).toLowerCase()}`) })}
       </legend>
 
@@ -53,7 +54,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
             value={value.firstName}
             onChange={(event) => update({ firstName: toUppercase(event.target.value) })}
             pattern="[A-Za-z\s'-]{1,50}"
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+            className={inputClass}
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
@@ -64,7 +65,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
             value={value.lastName}
             onChange={(event) => update({ lastName: toUppercase(event.target.value) })}
             pattern="[A-Za-z\s'-]{1,50}"
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+            className={inputClass}
           />
         </label>
 
@@ -75,7 +76,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
             required
             value={value.dateOfBirth}
             onChange={(event) => update({ dateOfBirth: event.target.value })}
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+            className={inputClass}
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
@@ -83,7 +84,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
           <select
             value={value.gender}
             onChange={(event) => update({ gender: event.target.value as Passenger["gender"] })}
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+            className={inputClass}
           >
             <option value="MALE">{t("genderMale")}</option>
             <option value="FEMALE">{t("genderFemale")}</option>
@@ -99,7 +100,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
                 required
                 value={value.email ?? ""}
                 onChange={(event) => update({ email: event.target.value })}
-                className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+                className={inputClass}
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
@@ -109,7 +110,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
                 required
                 value={value.phone ?? ""}
                 onChange={(event) => update({ phone: event.target.value })}
-                className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+                className={inputClass}
               />
             </label>
           </>
@@ -127,7 +128,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
               value={value.document?.number ?? ""}
               onChange={(event) => updateDocument({ number: toUppercase(event.target.value) })}
               pattern="[A-Za-z0-9]{5,20}"
-              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+              className={inputClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -137,7 +138,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
               required
               value={value.document?.expiryDate ?? ""}
               onChange={(event) => updateDocument({ expiryDate: event.target.value })}
-              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+              className={inputClass}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -149,7 +150,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
               value={value.document?.issuanceCountry ?? ""}
               onChange={(event) => updateDocument({ issuanceCountry: toUppercase(event.target.value) })}
               pattern="[A-Za-z]{2}"
-              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 uppercase text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+              className={`uppercase ${inputClass}`}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -161,7 +162,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
               value={value.document?.nationality ?? ""}
               onChange={(event) => updateDocument({ nationality: toUppercase(event.target.value) })}
               pattern="[A-Za-z]{2}"
-              className="rounded-lg border border-zinc-300 bg-white px-3 py-2 uppercase text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+              className={`uppercase ${inputClass}`}
             />
           </label>
         </div>

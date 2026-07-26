@@ -64,6 +64,16 @@ describe('AmadeusExceptionFilter', () => {
     expect(status).toHaveBeenCalledWith(HttpStatus.BAD_GATEWAY);
   });
 
+  it('maps a 429 AmadeusApiError to 429 Too Many Requests, distinct from a 400', () => {
+    const { host, status, json } = buildHost();
+
+    filter.catch(new AmadeusApiError('Rate limited', 429), host);
+
+    expect(status).toHaveBeenCalledWith(HttpStatus.TOO_MANY_REQUESTS);
+    const body = json.mock.calls[0][0] as Record<string, unknown>;
+    expect(body.message).not.toMatch(/invalid/i);
+  });
+
   it('maps GdsNotImplementedError to 501 Not Implemented', () => {
     const { host, status } = buildHost();
 

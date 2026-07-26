@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { priceOffer, searchFlights, startBooking } from "@/lib/api";
+import { parseIsoDuration } from "@/lib/format";
+import { inputClass } from "@/lib/ui";
 import type { FlightOffer, PricedOffer } from "@/lib/types";
 import { OfferCard } from "./offer-card";
 import { OfferSkeleton } from "./offer-skeleton";
@@ -22,14 +24,10 @@ interface SearchResultsProps {
   cabinClass?: string;
 }
 
-const ISO_DURATION_PATTERN = /^PT(?:(\d+)H)?(?:(\d+)M)?$/;
-
 function totalDurationMinutes(offer: FlightOffer): number {
   return offer.itineraries.reduce((sum, itinerary) => {
-    const match = ISO_DURATION_PATTERN.exec(itinerary.duration);
-    const hours = match?.[1] ? Number(match[1]) : 0;
-    const minutes = match?.[2] ? Number(match[2]) : 0;
-    return sum + hours * 60 + minutes;
+    const parsed = parseIsoDuration(itinerary.duration);
+    return sum + (parsed ? parsed.hours * 60 + parsed.minutes : 0);
   }, 0);
 }
 
@@ -147,7 +145,7 @@ export function SearchResults(props: SearchResultsProps) {
           <button
             type="button"
             onClick={handleBackToResults}
-            className="self-start text-sm font-medium text-black underline dark:text-white"
+            className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300"
           >
             {t("backToResults")}
           </button>
@@ -158,7 +156,7 @@ export function SearchResults(props: SearchResultsProps) {
 
   return (
     <div className="flex w-full max-w-2xl flex-col gap-4">
-      <Link href="/" className="self-start text-sm font-medium text-black underline dark:text-white">
+      <Link href="/" className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300">
         {t("newSearch")}
       </Link>
 
@@ -177,7 +175,7 @@ export function SearchResults(props: SearchResultsProps) {
             <select
               value={sortKey}
               onChange={(event) => setSortKey(event.target.value as SortKey)}
-              className="rounded-lg border border-zinc-300 bg-white px-2 py-1 text-sm text-black dark:border-zinc-700 dark:bg-black dark:text-white"
+              className={`px-2 py-1 ${inputClass}`}
             >
               <option value="price">{t("sortPrice")}</option>
               <option value="duration">{t("sortDuration")}</option>
@@ -185,7 +183,12 @@ export function SearchResults(props: SearchResultsProps) {
             </select>
           </label>
           <label className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
-            <input type="checkbox" checked={nonStopOnly} onChange={(event) => setNonStopOnly(event.target.checked)} />
+            <input
+              type="checkbox"
+              checked={nonStopOnly}
+              onChange={(event) => setNonStopOnly(event.target.checked)}
+              className="accent-primary-600"
+            />
             {t("nonStopOnly")}
           </label>
         </div>
