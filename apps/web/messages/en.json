@@ -3,11 +3,117 @@
     "tagline": "Specialists in Pakistan, India, Bangladesh, the Philippines, and Hajj & Umrah travel",
     "title": "Flights at the best price, no surprises",
     "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place.",
-    "popularRoutes": "Popular routes"
+    "categoriesHeading": "Popular destinations",
+    "servicesHeading": "Popular services"
   },
   "LocaleSwitcher": {
     "es": "Español",
     "en": "English"
+  },
+  "Nav": {
+    "logo": "Naafi Travels",
+    "menu": "Menu",
+    "flights": "Flights",
+    "hotels": "Hotels",
+    "hajjUmrah": "Hajj & Umrah",
+    "holidays": "Holidays",
+    "offers": "Offers",
+    "destinations": "Destinations",
+    "travelGuide": "Travel Guide"
+  },
+  "SearchWidget": {
+    "tabs": {
+      "flights": "Flights",
+      "hotels": "Hotels",
+      "hajjUmrah": "Hajj & Umrah",
+      "holidays": "Holidays"
+    },
+    "comingSoonTitle": "Coming soon",
+    "comingSoonBody": "We're working on this service. In the meantime, try searching for a flight."
+  },
+  "Categories": {
+    "explore": "Explore fares →",
+    "southAsia": {
+      "title": "South Asia",
+      "subtitle": "Pakistan, India, Bangladesh & more"
+    },
+    "philippines": {
+      "title": "Philippines",
+      "subtitle": "Fly home to family for less"
+    },
+    "latinAmerica": {
+      "title": "Latin America",
+      "subtitle": "Connecting you to what matters"
+    },
+    "hajjUmrah": {
+      "title": "Hajj & Umrah",
+      "subtitle": "Peace of mind, every step of the way"
+    }
+  },
+  "Services": {
+    "cheapFlights": "Cheap Flights",
+    "hotels": "Hotels",
+    "hajjUmrah": "Hajj & Umrah",
+    "holidays": "Holidays",
+    "travelInsurance": "Travel Insurance",
+    "extraBaggage": "Extra Baggage",
+    "visaServices": "Visa Services",
+    "airportTransfers": "Airport Transfers"
+  },
+  "TrustBadges": {
+    "support": { "title": "24/7 Support", "body": "We're here anytime, anywhere" },
+    "bestPrice": { "title": "Best Price Guarantee", "body": "Get the best or we match it" },
+    "secureBooking": { "title": "Secure Booking", "body": "Your data is 100% safe" },
+    "easyPayments": { "title": "Easy Payments", "body": "Multiple secure payment options" }
+  },
+  "Footer": {
+    "tagline": "Your trusted partner for flights, Hajj & Umrah, and more.",
+    "quickLinks": "Quick Links",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "faqs": "FAQs",
+    "blog": "Blog",
+    "careers": "Careers",
+    "topDestinations": "Top Destinations",
+    "pakistan": "Pakistan",
+    "india": "India",
+    "bangladesh": "Bangladesh",
+    "philippines": "Philippines",
+    "latinAmerica": "Latin America",
+    "middleEast": "Middle East",
+    "hajjUmrah": "Hajj & Umrah",
+    "hajjPackages": "Hajj Packages",
+    "umrahPackages": "Umrah Packages",
+    "visaInformation": "Visa Information",
+    "guidelines": "Guidelines",
+    "ziyaratTours": "Ziyarat Tours",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "bookingSupport": "Booking Support",
+    "changeBooking": "Change Booking",
+    "refundPolicy": "Refund Policy",
+    "addPhone": "Add phone number",
+    "addEmail": "Add email address",
+    "addAddress": "Add address",
+    "stayUpdated": "Stay Updated",
+    "newsletterHint": "Get the latest deals and travel updates.",
+    "newsletterComingSoon": "Thanks! This feature is coming soon.",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "copyright": "© {year} {brand}. All rights reserved.",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy"
+  },
+  "ComingSoon": {
+    "title": "Coming soon",
+    "body": "We're working on this section. Check back soon for updates.",
+    "backHome": "← Back home"
+  },
+  "HajjUmrah": {
+    "title": "Hajj & Umrah with Naafi Travels",
+    "subtitle": "With you every step of your pilgrimage",
+    "body": "Flights to Jeddah and Madinah, the gateways for Hajj and Umrah. Search your flight below - full packages with accommodation and visa support are coming soon.",
+    "destinationHint": "The destination is already set to Jeddah (JED) - change it to Madinah (MED) if you prefer."
   },
   "SearchForm": {
     "tripType": {

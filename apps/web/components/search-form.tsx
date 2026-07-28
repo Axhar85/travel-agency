@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { cardClass, inputClass, labelClass } from "@/lib/ui";
+import { inputClass, labelClass } from "@/lib/ui";
 import { AirportAutocomplete } from "./airport-autocomplete";
 import { PassengerSelector, type PassengerCounts } from "./passenger-selector";
 import { Button } from "./ui/button";
@@ -26,13 +26,18 @@ function addDays(dateStr: string, days: number): string {
   return date.toISOString().slice(0, 10);
 }
 
-export function SearchForm() {
+interface SearchFormProps {
+  /** Pre-fills the destination field - used by the Hajj & Umrah search tab to default toward Jeddah/Madinah. */
+  defaultDestination?: string;
+}
+
+export function SearchForm({ defaultDestination }: SearchFormProps = {}) {
   const t = useTranslations("SearchForm");
   const router = useRouter();
 
   const [tripType, setTripType] = useState<TripType>("roundtrip");
   const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState(defaultDestination ?? "");
   const [departureDate, setDepartureDate] = useState(today());
   const [returnDate, setReturnDate] = useState(addDays(today(), 7));
   const [passengers, setPassengers] = useState<PassengerCounts>({
@@ -83,10 +88,7 @@ export function SearchForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={`flex w-full flex-col gap-4 p-4 text-left sm:p-6 ${cardClass}`}
-    >
+    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4 text-left">
       <div className="flex gap-4 text-sm text-black dark:text-white">
         <label className="flex items-center gap-2">
           <input

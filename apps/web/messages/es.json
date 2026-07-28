@@ -3,11 +3,117 @@
     "tagline": "Especialistas en Pakistán, India, Bangladés, Filipinas y viajes de Hach y Umrah",
     "title": "Vuelos al mejor precio, sin sorpresas",
     "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio.",
-    "popularRoutes": "Rutas populares"
+    "categoriesHeading": "Destinos populares",
+    "servicesHeading": "Servicios populares"
   },
   "LocaleSwitcher": {
     "es": "Español",
     "en": "English"
+  },
+  "Nav": {
+    "logo": "Naafi Travels",
+    "menu": "Menú",
+    "flights": "Vuelos",
+    "hotels": "Hoteles",
+    "hajjUmrah": "Hach y Umrah",
+    "holidays": "Vacaciones",
+    "offers": "Ofertas",
+    "destinations": "Destinos",
+    "travelGuide": "Guía de viaje"
+  },
+  "SearchWidget": {
+    "tabs": {
+      "flights": "Vuelos",
+      "hotels": "Hoteles",
+      "hajjUmrah": "Hach y Umrah",
+      "holidays": "Vacaciones"
+    },
+    "comingSoonTitle": "Próximamente",
+    "comingSoonBody": "Estamos preparando este servicio. Mientras tanto, prueba a buscar tu vuelo."
+  },
+  "Categories": {
+    "explore": "Explorar ofertas →",
+    "southAsia": {
+      "title": "Sur de Asia",
+      "subtitle": "Pakistán, India, Bangladés y más"
+    },
+    "philippines": {
+      "title": "Filipinas",
+      "subtitle": "Vuela a casa por menos"
+    },
+    "latinAmerica": {
+      "title": "Latinoamérica",
+      "subtitle": "Conectando contigo lo que importa"
+    },
+    "hajjUmrah": {
+      "title": "Hach y Umrah",
+      "subtitle": "Tranquilidad en cada paso"
+    }
+  },
+  "Services": {
+    "cheapFlights": "Vuelos baratos",
+    "hotels": "Hoteles",
+    "hajjUmrah": "Hach y Umrah",
+    "holidays": "Vacaciones",
+    "travelInsurance": "Seguro de viaje",
+    "extraBaggage": "Equipaje extra",
+    "visaServices": "Gestión de visados",
+    "airportTransfers": "Traslados al aeropuerto"
+  },
+  "TrustBadges": {
+    "support": { "title": "Soporte 24/7", "body": "Aquí siempre que nos necesites" },
+    "bestPrice": { "title": "Mejor precio garantizado", "body": "Si encuentras uno mejor, lo igualamos" },
+    "secureBooking": { "title": "Reserva segura", "body": "Tus datos, 100% protegidos" },
+    "easyPayments": { "title": "Pagos fáciles", "body": "Varias formas de pago seguras" }
+  },
+  "Footer": {
+    "tagline": "Tu agencia de confianza para vuelos, Hach y Umrah, y mucho más.",
+    "quickLinks": "Enlaces rápidos",
+    "aboutUs": "Sobre nosotros",
+    "contactUs": "Contacto",
+    "faqs": "Preguntas frecuentes",
+    "blog": "Blog",
+    "careers": "Empleo",
+    "topDestinations": "Destinos principales",
+    "pakistan": "Pakistán",
+    "india": "India",
+    "bangladesh": "Bangladés",
+    "philippines": "Filipinas",
+    "latinAmerica": "Latinoamérica",
+    "middleEast": "Oriente Medio",
+    "hajjUmrah": "Hach y Umrah",
+    "hajjPackages": "Paquetes de Hach",
+    "umrahPackages": "Paquetes de Umrah",
+    "visaInformation": "Información de visado",
+    "guidelines": "Guías y consejos",
+    "ziyaratTours": "Tours de Ziyarat",
+    "support": "Soporte",
+    "helpCenter": "Centro de ayuda",
+    "bookingSupport": "Ayuda con tu reserva",
+    "changeBooking": "Modificar reserva",
+    "refundPolicy": "Política de reembolso",
+    "addPhone": "Añadir teléfono",
+    "addEmail": "Añadir correo electrónico",
+    "addAddress": "Añadir dirección",
+    "stayUpdated": "Mantente informado",
+    "newsletterHint": "Recibe las últimas ofertas y novedades.",
+    "newsletterComingSoon": "¡Gracias! Esta función estará disponible pronto.",
+    "emailPlaceholder": "Tu correo electrónico",
+    "subscribe": "Suscribirse",
+    "copyright": "© {year} {brand}. Todos los derechos reservados.",
+    "terms": "Términos y condiciones",
+    "privacy": "Política de privacidad"
+  },
+  "ComingSoon": {
+    "title": "Próximamente",
+    "body": "Estamos trabajando en esta sección. Vuelve pronto para más novedades.",
+    "backHome": "← Volver al inicio"
+  },
+  "HajjUmrah": {
+    "title": "Hach y Umrah con Naafi Travels",
+    "subtitle": "Te acompañamos en cada paso de tu peregrinación",
+    "body": "Vuelos a Yeda y Medina, las puertas de entrada para el Hach y la Umrah. Busca tu vuelo a continuación; muy pronto añadiremos paquetes completos con alojamiento y visado.",
+    "destinationHint": "El destino ya está preconfigurado a Yeda (JED) — cámbialo a Medina (MED) si lo prefieres."
   },
   "SearchForm": {
     "tripType": {
