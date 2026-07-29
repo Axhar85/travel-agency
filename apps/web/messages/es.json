@@ -94,7 +94,8 @@
     "subscribe": "Suscribirse",
     "copyright": "© {year} {brand}. Todos los derechos reservados.",
     "terms": "Términos y condiciones",
-    "privacy": "Política de privacidad"
+    "privacy": "Política de privacidad",
+    "cookiePolicy": "Política de cookies"
   },
   "ComingSoon": {
     "title": "Próximamente",
@@ -263,5 +264,23 @@
     "statusFailed": "Pago fallido",
     "passengerCount": "{count, plural, one {# pasajero} other {# pasajeros}}",
     "bookedOn": "Reservado el {date}"
+  },
+  "CookieConsent": {
+    "message": "Usamos una cookie necesaria para mantener tu sesión iniciada y recordar tu búsqueda o reserva en curso.",
+    "learnMore": "Más información",
+    "necessaryOnly": "Solo necesarias",
+    "acceptAll": "Aceptar todas"
+  },
+  "CookiePolicy": {
+    "title": "Política de cookies",
+    "intro": "Esta página explica qué cookies utiliza Naafi Travels y por qué, en términos claros y sin relleno.",
+    "necessaryHeading": "Cookies necesarias",
+    "necessaryBody": "Utilizamos una única cookie de sesión, estrictamente necesaria, para mantener tu sesión iniciada y recordar tu búsqueda o reserva en curso. Es una cookie propia (no de terceros), no se puede desactivar sin dejar de poder usar el sitio, y dura 30 minutos si no has iniciado sesión o 30 días si sí lo has hecho.",
+    "paymentHeading": "Cookies de terceros durante el pago",
+    "paymentBody": "En el paso de pago, nuestro procesador de pagos (Stripe) puede establecer sus propias cookies con fines de prevención de fraude. No las controlamos directamente - consulta la política de privacidad de Stripe para más información.",
+    "preferenceHeading": "Tu preferencia de cookies",
+    "preferenceBody": "Tu elección en el aviso de cookies se guarda en el almacenamiento local de tu navegador (localStorage), no en una cookie, y solo en tu dispositivo.",
+    "noAnalyticsHeading": "Sin cookies de análisis o marketing (todavía)",
+    "noAnalyticsBody": "Actualmente no utilizamos cookies de análisis, publicidad ni redes sociales. Si añadimos alguna en el futuro, actualizaremos esta página y pediremos tu consentimiento antes de activarla."
   }
 }

@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { SearchResults } from "@/components/search-results";
+
+// Dynamic, per-query results page - not stable content worth indexing.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 function toStringParam(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;

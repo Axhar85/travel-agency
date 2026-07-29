@@ -94,7 +94,8 @@
     "subscribe": "Subscribe",
     "copyright": "© {year} {brand}. All rights reserved.",
     "terms": "Terms & Conditions",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "cookiePolicy": "Cookie Policy"
   },
   "ComingSoon": {
     "title": "Coming soon",
@@ -263,5 +264,23 @@
     "statusFailed": "Payment failed",
     "passengerCount": "{count, plural, one {# passenger} other {# passengers}}",
     "bookedOn": "Booked on {date}"
+  },
+  "CookieConsent": {
+    "message": "We use a necessary cookie to keep you logged in and remember your in-progress search or booking.",
+    "learnMore": "Learn more",
+    "necessaryOnly": "Necessary only",
+    "acceptAll": "Accept all"
+  },
+  "CookiePolicy": {
+    "title": "Cookie Policy",
+    "intro": "This page explains what cookies Naafi Travels uses and why, in plain terms.",
+    "necessaryHeading": "Necessary cookies",
+    "necessaryBody": "We use a single, strictly necessary session cookie to keep you logged in and remember your in-progress search or booking. It's a first-party cookie (not third-party), can't be turned off without losing the ability to use the site, and lasts 30 minutes if you're not logged in, or 30 days if you are.",
+    "paymentHeading": "Third-party cookies during payment",
+    "paymentBody": "At the payment step, our payment processor (Stripe) may set its own cookies for fraud prevention. We don't control these directly - see Stripe's privacy policy for details.",
+    "preferenceHeading": "Your cookie preference",
+    "preferenceBody": "Your choice on the cookie notice is stored in your browser's local storage (localStorage), not a cookie, and stays only on your device.",
+    "noAnalyticsHeading": "No analytics or marketing cookies (yet)",
+    "noAnalyticsBody": "We don't currently use any analytics, advertising, or social media cookies. If we add any in the future, we'll update this page and ask for your consent before turning them on."
   }
 }

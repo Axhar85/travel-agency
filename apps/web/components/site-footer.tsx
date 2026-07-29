@@ -145,6 +145,9 @@ export function SiteFooter() {
             <Link href="/coming-soon" className="hover:text-primary-700 dark:hover:text-primary-300">
               {t("privacy")}
             </Link>
+            <Link href="/cookie-policy" className="hover:text-primary-700 dark:hover:text-primary-300">
+              {t("cookiePolicy")}
+            </Link>
           </div>
         </div>
       </div>

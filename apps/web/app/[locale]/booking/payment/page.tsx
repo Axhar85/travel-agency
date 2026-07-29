@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BookingPayment } from "@/components/booking-payment";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function PaymentPage({
   params,

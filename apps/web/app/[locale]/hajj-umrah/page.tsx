@@ -1,7 +1,24 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { SearchForm } from "@/components/search-form";
 import { searchCardClass } from "@/lib/ui";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "HajjUmrah" });
+
+  return {
+    // absolute - the copy already includes the brand name, so it shouldn't
+    // also get the layout's "%s | Naafi Travels" template suffix appended.
+    title: { absolute: t("title") },
+    description: t("subtitle"),
+  };
+}
 
 export default async function HajjUmrahPage({
   params,
