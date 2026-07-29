@@ -128,3 +128,56 @@ export interface Promotion {
   createdAt: string;
   updatedAt: string;
 }
+
+// Mirrors apps/api/prisma/schema.prisma's HeroSlide/DestinationCard models -
+// bilingual fields directly (not translation keys), since this is owner-typed
+// free text from the admin panel, not developer-authored copy.
+export interface HeroSlideData {
+  id: string;
+  titleEs: string;
+  titleEn: string;
+  subtitleEs: string;
+  subtitleEn: string;
+  imageUrl: string;
+  linkUrl: string;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DestinationCardData {
+  id: string;
+  titleEs: string;
+  titleEn: string;
+  subtitleEs: string;
+  subtitleEn: string;
+  imageUrl: string;
+  linkUrl: string;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Mirrors apps/api/src/account/account.service.ts's SafeUser (never includes passwordHash).
+export interface User {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+}
+
+// Mirrors apps/api/prisma/schema.prisma's Booking model. Deliberately does not
+// claim "confirmed"/"ticketed" - see BookingRecordStatus in the backend schema.
+export type BookingRecordStatus = "PAYMENT_AUTHORIZED" | "PAYMENT_FAILED";
+
+export interface BookingRecord {
+  id: string;
+  status: BookingRecordStatus;
+  offerSnapshot: PricedOffer;
+  passengers: Passenger[];
+  totalAmountMinor: number;
+  currency: string;
+  createdAt: string;
+}

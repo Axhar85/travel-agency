@@ -16,13 +16,13 @@ function ItineraryRow({ itinerary }: { itinerary: FlightItinerary }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
       <div className="flex items-baseline gap-2">
-        <span className="font-semibold text-black dark:text-white">{formatTime(firstSegment.departure.at, locale)}</span>
-        <span className="text-zinc-500 dark:text-zinc-400">{firstSegment.departure.iataCode}</span>
+        <span className="font-semibold text-black">{formatTime(firstSegment.departure.at, locale)}</span>
+        <span className="text-zinc-500">{firstSegment.departure.iataCode}</span>
         <span className="text-zinc-400">→</span>
-        <span className="font-semibold text-black dark:text-white">{formatTime(lastSegment.arrival.at, locale)}</span>
-        <span className="text-zinc-500 dark:text-zinc-400">{lastSegment.arrival.iataCode}</span>
+        <span className="font-semibold text-black">{formatTime(lastSegment.arrival.at, locale)}</span>
+        <span className="text-zinc-500">{lastSegment.arrival.iataCode}</span>
       </div>
-      <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+      <div className="flex items-center gap-2 text-xs text-zinc-500">
         <span>{formatDate(firstSegment.departure.at, locale)}</span>
         <span>·</span>
         <span>{formatDuration(itinerary.duration)}</span>
@@ -45,14 +45,14 @@ export function OfferCard({ offer, onSelect }: OfferCardProps) {
   const locale = useLocale();
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950">
-      <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+    <div className="flex flex-col gap-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+      <div className="divide-y divide-zinc-100">
         {offer.itineraries.map((itinerary, index) => (
           <ItineraryRow key={index} itinerary={itinerary} />
         ))}
       </div>
-      <div className="flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
-        <span className="text-lg font-semibold text-accent-700 dark:text-accent-400">
+      <div className="flex items-center justify-between border-t border-zinc-100 pt-3">
+        <span className="text-lg font-semibold text-accent-700">
           {formatPrice(offer.price.total, offer.price.currency, locale)}
         </span>
         <Button type="button" onClick={() => onSelect(offer)} className="px-5 py-2">

@@ -123,7 +123,7 @@ export function SearchResults(props: SearchResultsProps) {
     return (
       <div className="flex w-full max-w-2xl flex-col gap-4">
         {pricingError && (
-          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
             {pricingError}
           </div>
         )}
@@ -137,7 +137,7 @@ export function SearchResults(props: SearchResultsProps) {
           />
         )}
         {bookingError && (
-          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
             {bookingError}
           </div>
         )}
@@ -145,7 +145,7 @@ export function SearchResults(props: SearchResultsProps) {
           <button
             type="button"
             onClick={handleBackToResults}
-            className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300"
+            className="self-start text-sm font-medium text-primary-700 underline"
           >
             {t("backToResults")}
           </button>
@@ -156,22 +156,22 @@ export function SearchResults(props: SearchResultsProps) {
 
   return (
     <div className="flex w-full max-w-2xl flex-col gap-4">
-      <Link href="/" className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300">
+      <Link href="/" className="self-start text-sm font-medium text-primary-700 underline">
         {t("newSearch")}
       </Link>
 
       {error && (
-        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {error}
         </div>
       )}
 
-      {!error && offers && offers.length === 0 && <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("noResults")}</p>}
+      {!error && offers && offers.length === 0 && <p className="text-sm text-zinc-600">{t("noResults")}</p>}
 
       {!error && offers && offers.length > 0 && (
         <div className="flex flex-wrap items-center gap-4 text-sm">
           <label className="flex items-center gap-2">
-            <span className="text-zinc-600 dark:text-zinc-400">{t("sortBy")}</span>
+            <span className="text-zinc-600">{t("sortBy")}</span>
             <select
               value={sortKey}
               onChange={(event) => setSortKey(event.target.value as SortKey)}
@@ -182,7 +182,7 @@ export function SearchResults(props: SearchResultsProps) {
               <option value="stops">{t("sortStops")}</option>
             </select>
           </label>
-          <label className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
+          <label className="flex items-center gap-2 text-zinc-600">
             <input
               type="checkbox"
               checked={nonStopOnly}

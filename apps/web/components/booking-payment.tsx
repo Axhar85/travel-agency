@@ -66,16 +66,16 @@ export function BookingPayment() {
   const amount = (amountMinorUnits / 100).toFixed(2);
 
   if (phase === "loading") {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("loading")}</p>;
+    return <p className="text-sm text-zinc-600">{t("loading")}</p>;
   }
 
   if (phase === "error") {
     return (
       <div className="flex w-full max-w-md flex-col gap-4">
-        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {t("sessionExpired")}
         </div>
-        <Link href="/" className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300">
+        <Link href="/" className="self-start text-sm font-medium text-primary-700 underline">
           {t("backToSearch")}
         </Link>
       </div>
@@ -84,7 +84,7 @@ export function BookingPayment() {
 
   if (phase === "authorized") {
     return (
-      <div className="w-full max-w-md rounded-lg border border-green-300 bg-green-50 p-3 text-sm text-green-900 dark:border-green-700 dark:bg-green-950 dark:text-green-200">
+      <div className="w-full max-w-md rounded-lg border border-green-300 bg-green-50 p-3 text-sm text-green-900">
         {t("authorizedMessage")}
       </div>
     );
@@ -93,7 +93,7 @@ export function BookingPayment() {
   if (phase === "failed") {
     return (
       <div className="flex w-full max-w-md flex-col gap-4">
-        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {t("genericError")}
         </div>
         <button
@@ -106,7 +106,7 @@ export function BookingPayment() {
             // rather than re-checking the same failed intent.
             window.location.href = window.location.pathname;
           }}
-          className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300"
+          className="self-start text-sm font-medium text-primary-700 underline"
         >
           {t("retry")}
         </button>
@@ -116,8 +116,8 @@ export function BookingPayment() {
 
   return (
     <div className="flex w-full max-w-md flex-col gap-4">
-      <h1 className="text-xl font-semibold text-black dark:text-white">{t("title")}</h1>
-      <p className="text-lg font-semibold text-accent-700 dark:text-accent-400">
+      <h1 className="text-xl font-semibold text-black">{t("title")}</h1>
+      <p className="text-lg font-semibold text-accent-700">
         {t("amountLabel", { amount, currency })}
       </p>
       {clientSecret && (

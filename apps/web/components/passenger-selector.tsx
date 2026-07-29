@@ -39,8 +39,8 @@ function Counter({
   return (
     <div className="flex items-center justify-between py-2">
       <div>
-        <div className="text-sm font-medium text-black dark:text-white">{label}</div>
-        <div className="text-xs text-zinc-500 dark:text-zinc-400">{hint}</div>
+        <div className="text-sm font-medium text-black">{label}</div>
+        <div className="text-xs text-zinc-500">{hint}</div>
       </div>
       <div className="flex items-center gap-3">
         <button
@@ -48,17 +48,17 @@ function Counter({
           disabled={count <= min}
           onClick={onDecrement}
           aria-label={`decrease ${label}`}
-          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 transition-colors hover:border-primary-300 hover:bg-primary-50 disabled:opacity-30 disabled:hover:bg-transparent dark:border-zinc-600 dark:text-primary-300 dark:hover:bg-primary-900/40"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 transition-colors hover:border-primary-300 hover:bg-primary-50 disabled:opacity-30 disabled:hover:bg-transparent"
         >
           −
         </button>
-        <span className="w-4 text-center text-sm text-black dark:text-white">{count}</span>
+        <span className="w-4 text-center text-sm text-black">{count}</span>
         <button
           type="button"
           disabled={count >= max}
           onClick={onIncrement}
           aria-label={`increase ${label}`}
-          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 transition-colors hover:border-primary-300 hover:bg-primary-50 disabled:opacity-30 disabled:hover:bg-transparent dark:border-zinc-600 dark:text-primary-300 dark:hover:bg-primary-900/40"
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 transition-colors hover:border-primary-300 hover:bg-primary-50 disabled:opacity-30 disabled:hover:bg-transparent"
         >
           +
         </button>
@@ -102,7 +102,7 @@ export function PassengerSelector({ value, onChange }: PassengerSelectorProps) {
         {totalPassengers} · {t(`cabinClasses.${value.cabinClass}`)}
       </button>
       {isOpen && (
-        <div className="absolute top-full z-10 mt-1 w-72 divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white p-3 shadow-lg dark:divide-zinc-700 dark:border-zinc-700 dark:bg-zinc-900">
+        <div className="absolute top-full z-10 mt-1 w-72 divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white p-3 shadow-lg">
           <Counter
             label={t("adults")}
             hint={t("adultsHint")}
@@ -131,7 +131,7 @@ export function PassengerSelector({ value, onChange }: PassengerSelectorProps) {
             onIncrement={() => update({ infants: value.infants + 1 })}
           />
           <div className="pt-3">
-            <label className="mb-1 block text-xs font-medium text-zinc-500 dark:text-zinc-400">{t("cabinClass")}</label>
+            <label className="mb-1 block text-xs font-medium text-zinc-500">{t("cabinClass")}</label>
             <select
               value={value.cabinClass}
               onChange={(event) => update({ cabinClass: event.target.value as CabinClass })}

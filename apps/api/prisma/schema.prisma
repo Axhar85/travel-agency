@@ -27,3 +27,83 @@ model Promotion {
 
   @@index([isActive, sortOrder])
 }
+
+/// Owner-editable hero carousel slide. Bilingual text fields (not
+/// translation keys) because this is free text an owner types via the admin
+/// panel, not developer-authored copy - see HeroSlidesModule.
+model HeroSlide {
+  id         String   @id @default(uuid())
+  titleEs    String
+  titleEn    String
+  subtitleEs String
+  subtitleEn String
+  imageUrl   String
+  linkUrl    String
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+/// Owner-editable homepage destination/category card - see DestinationCardsModule.
+model DestinationCard {
+  id         String   @id @default(uuid())
+  titleEs    String
+  titleEn    String
+  subtitleEs String
+  subtitleEn String
+  imageUrl   String
+  linkUrl    String
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
+/// Customer account. Separate from the single hardcoded admin login
+/// (AdminModule) - this is the "log in to check flights / see past
+/// bookings" account system, optional at every step (guest checkout is
+/// unchanged).
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+}
+
+enum BookingRecordStatus {
+  PAYMENT_AUTHORIZED
+  PAYMENT_FAILED
+}
+
+/// Durable record of a booking, written once its Redis-backed session
+/// reaches payment_authorized or payment_failed (see BookingService.getState
+/// and BookingRecordRepository). Deliberately does NOT claim "confirmed" or
+/// "ticketed" - real GDS order creation + payment capture aren't implemented
+/// yet (AmadeusService.createOrder is a stub; see PROGRESS.md). userId is
+/// nullable because every booking is persisted here regardless of whether
+/// the customer was logged in - only rows with a userId are ever returned
+/// to anyone (GET /account/bookings filters strictly by session.userId).
+model Booking {
+  id               String              @id @default(uuid())
+  userId           String?
+  user             User?               @relation(fields: [userId], references: [id])
+  paymentIntentId  String              @unique
+  status           BookingRecordStatus
+  offerSnapshot    Json
+  passengers       Json
+  totalAmountMinor Int
+  currency         String
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([userId, createdAt])
+}

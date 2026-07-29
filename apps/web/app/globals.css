@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  /* Warm ivory instead of stark white - matches the gold accent family
+     (same tone as --accent-50) so the page background itself feels like
+     part of the brand palette rather than a neutral default. Applied
+     unconditionally (not overridden below for dark mode) - text stays dark
+     on it always, see the note in the dark media query. */
+  --background: #fbf6e8;
   --foreground: #1a1a18;
 
   /* Brand palette — deep green + gold, chosen for a South Asian /
@@ -67,13 +72,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0e0c;
-    --foreground: #ededea;
-
-    /* Brand colors intentionally do NOT invert like background/foreground
-       above - a deep green/gold brand identity should read the same in
-       light or dark mode. Only the mid-scale shades shift slightly lighter
-       here so they still have enough contrast against a near-black page. */
+    /* --background/--foreground deliberately do NOT invert here - the page
+       stays the warm light ivory (with dark text) regardless of system
+       theme, same choice already made for the search widget. Only the
+       brand green's mid-scale shades shift slightly lighter, since the
+       header/footer still switch to a dark surface (bg-black) in system
+       dark mode and need enough contrast there. */
     --primary-400: #4f9c76;
     --primary-500: #2f8760;
     --primary-600: #1f7350;

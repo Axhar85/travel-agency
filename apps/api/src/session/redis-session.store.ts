@@ -13,7 +13,7 @@ const SESSION_KEY_PREFIX = 'sess:';
 export class RedisSessionStore extends Store {
   constructor(
     private readonly redis: Redis,
-    private readonly ttlSeconds: number,
+    private readonly defaultTtlSeconds: number,
   ) {
     super();
   }
@@ -30,6 +30,16 @@ export class RedisSessionStore extends Store {
       .catch((err: unknown) => callback(err));
   }
 
+  // A logged-in customer session (AccountService.login/register) sets
+  // session.cookie.maxAge much longer than the anonymous booking-session
+  // default - without reading it here, the Redis record would still expire
+  // in BOOKING_SESSION_TTL_SECONDS regardless of what the cookie itself
+  // says, silently logging the customer out far earlier than intended.
+  private ttlSecondsFor(session: SessionData): number {
+    const maxAge = session.cookie?.maxAge;
+    return maxAge ? Math.ceil(maxAge / 1000) : this.defaultTtlSeconds;
+  }
+
   set(
     sid: string,
     session: SessionData,
@@ -40,7 +50,7 @@ export class RedisSessionStore extends Store {
         SESSION_KEY_PREFIX + sid,
         JSON.stringify(session),
         'EX',
-        this.ttlSeconds,
+        this.ttlSecondsFor(session),
       )
       .then(() => callback?.())
       .catch((err: unknown) => callback?.(err));
@@ -55,11 +65,11 @@ export class RedisSessionStore extends Store {
 
   touch(
     sid: string,
-    _session: SessionData,
+    session: SessionData,
     callback?: (err?: unknown) => void,
   ): void {
     this.redis
-      .expire(SESSION_KEY_PREFIX + sid, this.ttlSeconds)
+      .expire(SESSION_KEY_PREFIX + sid, this.ttlSecondsFor(session))
       .then(() => callback?.())
       .catch((err: unknown) => callback?.(err));
   }

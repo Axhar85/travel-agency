@@ -41,13 +41,13 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
 
   return (
     <fieldset className={`flex flex-col gap-4 p-4 ${cardClass}`}>
-      <legend className="px-1 text-sm font-semibold text-primary-800 dark:text-primary-200">
+      <legend className="px-1 text-sm font-semibold text-primary-800">
         {t("passengerLabel", { number: index + 1, type: t(`type${type.charAt(0)}${type.slice(1).toLowerCase()}`) })}
       </legend>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("firstName")}</span>
+          <span className="font-medium text-zinc-700">{t("firstName")}</span>
           <input
             type="text"
             required
@@ -58,7 +58,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("lastName")}</span>
+          <span className="font-medium text-zinc-700">{t("lastName")}</span>
           <input
             type="text"
             required
@@ -70,7 +70,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
         </label>
 
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("dateOfBirth")}</span>
+          <span className="font-medium text-zinc-700">{t("dateOfBirth")}</span>
           <input
             type="date"
             required
@@ -80,7 +80,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("gender")}</span>
+          <span className="font-medium text-zinc-700">{t("gender")}</span>
           <select
             value={value.gender}
             onChange={(event) => update({ gender: event.target.value as Passenger["gender"] })}
@@ -94,7 +94,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
         {isAdult && (
           <>
             <label className="flex flex-col gap-1 text-sm">
-              <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("email")}</span>
+              <span className="font-medium text-zinc-700">{t("email")}</span>
               <input
                 type="email"
                 required
@@ -104,7 +104,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("phone")}</span>
+              <span className="font-medium text-zinc-700">{t("phone")}</span>
               <input
                 type="tel"
                 required
@@ -117,11 +117,11 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
         )}
       </div>
 
-      <div className="flex flex-col gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-800">
-        <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{t("passportSection")}</span>
+      <div className="flex flex-col gap-3 border-t border-zinc-100 pt-3">
+        <span className="text-sm font-semibold text-zinc-700">{t("passportSection")}</span>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("passportNumber")}</span>
+            <span className="font-medium text-zinc-700">{t("passportNumber")}</span>
             <input
               type="text"
               required
@@ -132,7 +132,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("passportExpiry")}</span>
+            <span className="font-medium text-zinc-700">{t("passportExpiry")}</span>
             <input
               type="date"
               required
@@ -142,7 +142,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("passportIssuanceCountry")}</span>
+            <span className="font-medium text-zinc-700">{t("passportIssuanceCountry")}</span>
             <input
               type="text"
               required
@@ -154,7 +154,7 @@ export function PassengerForm({ index, type, value, onChange }: PassengerFormPro
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-zinc-700 dark:text-zinc-300">{t("nationality")}</span>
+            <span className="font-medium text-zinc-700">{t("nationality")}</span>
             <input
               type="text"
               required

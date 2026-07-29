@@ -90,19 +90,19 @@ export function AdminPromotionsDashboard() {
   }
 
   if (loadError) {
-    return <p className="text-sm text-red-600 dark:text-red-400">{t("loadError")}</p>;
+    return <p className="text-sm text-red-600">{t("loadError")}</p>;
   }
 
   if (!promotions) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("loading")}</p>;
+    return <p className="text-sm text-zinc-600">{t("loading")}</p>;
   }
 
   return (
     <div className="flex w-full max-w-2xl flex-col gap-8">
-      <h1 className="text-xl font-semibold text-black dark:text-white">{t("promotionsTitle")}</h1>
+      <h1 className="text-xl font-semibold text-black">{t("promotionsTitle")}</h1>
 
       <form onSubmit={handleUpload} className={`flex flex-col gap-4 p-4 ${cardClass}`}>
-        <h2 className="text-sm font-semibold text-primary-800 dark:text-primary-200">{t("uploadTitle")}</h2>
+        <h2 className="text-sm font-semibold text-primary-800">{t("uploadTitle")}</h2>
         <label className="flex flex-col gap-1 text-sm">
           <span className={labelClass}>{t("image")}</span>
           <input
@@ -133,7 +133,7 @@ export function AdminPromotionsDashboard() {
           />
         </label>
         {uploadError && (
-          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+          <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
             {uploadError}
           </div>
         )}
@@ -144,17 +144,17 @@ export function AdminPromotionsDashboard() {
 
       <div className="flex flex-col gap-3">
         {promotions.length === 0 && (
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("noPromotions")}</p>
+          <p className="text-sm text-zinc-600">{t("noPromotions")}</p>
         )}
         {promotions.map((promotion, index) => (
           <div key={promotion.id} className={`flex items-center gap-3 p-3 ${cardClass}`}>
             {/* eslint-disable-next-line @next/next/no-img-element -- admin-only tool, arbitrary owner-uploaded Blob URLs, not worth next/image's remotePatterns coupling here */}
             <img src={promotion.imageUrl} alt="" className="h-16 w-16 rounded-lg object-cover" />
             <div className="flex flex-1 flex-col gap-0.5">
-              <span className="text-sm font-medium text-black dark:text-white">
+              <span className="text-sm font-medium text-black">
                 {promotion.title || t("untitled")}
               </span>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              <span className="text-xs text-zinc-500">
                 {promotion.isActive ? t("active") : t("inactive")}
               </span>
             </div>
@@ -164,7 +164,7 @@ export function AdminPromotionsDashboard() {
                 onClick={() => void handleMove(index, -1)}
                 disabled={index === 0}
                 aria-label={t("moveUp")}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 disabled:opacity-30 dark:border-zinc-600 dark:text-primary-300"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 disabled:opacity-30"
               >
                 ↑
               </button>
@@ -173,21 +173,21 @@ export function AdminPromotionsDashboard() {
                 onClick={() => void handleMove(index, 1)}
                 disabled={index === promotions.length - 1}
                 aria-label={t("moveDown")}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 disabled:opacity-30 dark:border-zinc-600 dark:text-primary-300"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-zinc-300 text-primary-700 disabled:opacity-30"
               >
                 ↓
               </button>
               <button
                 type="button"
                 onClick={() => void handleToggleActive(promotion)}
-                className="rounded-full border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
+                className="rounded-full border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700"
               >
                 {promotion.isActive ? t("hide") : t("show")}
               </button>
               <button
                 type="button"
                 onClick={() => void handleDelete(promotion.id)}
-                className="rounded-full border border-red-300 px-3 py-1 text-xs font-medium text-red-700 dark:border-red-700 dark:text-red-300"
+                className="rounded-full border border-red-300 px-3 py-1 text-xs font-medium text-red-700"
               >
                 {t("delete")}
               </button>
