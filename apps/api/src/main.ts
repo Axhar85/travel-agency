@@ -48,8 +48,14 @@ async function bootstrap() {
         // localhost:3000 and localhost:4000 are same-site (SameSite only
         // considers scheme + registrable domain, not port), so 'lax' works
         // for the cross-port dev setup without needing SameSite=None+Secure
-        // (which would require HTTPS even in local dev).
-        sameSite: 'lax',
+        // (which would require HTTPS even in local dev). A real deployment
+        // (e.g. frontend on Netlify, API on Render) puts the two apps on
+        // different registrable domains - that's cross-SITE, not just
+        // cross-port, and 'lax' blocks the cookie on the fetch()-with-
+        // credentials calls this app relies on for login/booking/admin.
+        // 'none' (paired with secure:true, which HTTPS-terminating hosts
+        // like Render/Netlify provide by default) is required for that.
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: bookingSessionTtlSeconds * 1000,
       },
     }),
