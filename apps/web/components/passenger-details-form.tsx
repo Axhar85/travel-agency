@@ -90,10 +90,10 @@ export function PassengerDetailsForm() {
   if (hasLoadError) {
     return (
       <div className="flex w-full max-w-2xl flex-col gap-4">
-        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {t("sessionExpired")}
         </div>
-        <Link href="/" className="self-start text-sm font-medium text-primary-700 underline dark:text-primary-300">
+        <Link href="/" className="self-start text-sm font-medium text-primary-700 underline">
           {t("backToSearch")}
         </Link>
       </div>
@@ -101,12 +101,12 @@ export function PassengerDetailsForm() {
   }
 
   if (!booking) {
-    return <p className="text-sm text-zinc-600 dark:text-zinc-400">{t("loading")}</p>;
+    return <p className="text-sm text-zinc-600">{t("loading")}</p>;
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full max-w-2xl flex-col gap-4">
-      <h1 className="text-xl font-semibold text-black dark:text-white">{t("title")}</h1>
+      <h1 className="text-xl font-semibold text-black">{t("title")}</h1>
 
       {passengers.map((passenger, index) => (
         <PassengerForm
@@ -119,7 +119,7 @@ export function PassengerDetailsForm() {
       ))}
 
       {submitError && (
-        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {submitError}
         </div>
       )}

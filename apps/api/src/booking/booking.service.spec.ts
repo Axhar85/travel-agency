@@ -2,6 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { AmadeusService } from '../amadeus/amadeus.service';
 import { PricedOffer } from '../amadeus/interfaces/gds-client.interface';
 import { PaymentsService } from '../payments/payments.service';
+import { BookingRecordRepository } from './booking-record.repository';
 import { BookingService } from './booking.service';
 import { RequestSession } from './booking-session.types';
 import { StartBookingDto } from './dto/start-booking.dto';
@@ -43,8 +44,12 @@ describe('BookingService', () => {
     const paymentsService = {
       refreshPaymentStatus: jest.fn().mockResolvedValue(undefined),
     } as unknown as PaymentsService;
-    const service = new BookingService(amadeusService, paymentsService);
-    return { service, amadeusService, paymentsService };
+    const bookingRecords = {
+      upsertFromSession: jest.fn().mockResolvedValue(undefined),
+      findByUserId: jest.fn().mockResolvedValue([]),
+    } as unknown as BookingRecordRepository;
+    const service = new BookingService(amadeusService, paymentsService, bookingRecords);
+    return { service, amadeusService, paymentsService, bookingRecords };
   }
 
   it('startBooking re-prices the offer and stores the booking in the session', async () => {
@@ -143,5 +148,73 @@ describe('BookingService', () => {
     await expect(
       service.submitPassengers(session, { passengers: [buildAdult()] }),
     ).rejects.toThrow(NotFoundException);
+  });
+
+  describe('getState persistence on payment transitions', () => {
+    async function startAtPaymentStep(
+      service: BookingService,
+      session: RequestSession,
+    ) {
+      await service.startBooking(session, { offerId: 'offer-1', adults: 1 });
+      session.booking!.payment = { paymentIntentId: 'pi_1', status: 'requires_payment' };
+      session.booking!.step = 'payment';
+    }
+
+    it('persists exactly once on the transition into payment_authorized', async () => {
+      const { service, paymentsService, bookingRecords } = buildService();
+      const session = buildSession();
+      await startAtPaymentStep(service, session);
+      (paymentsService.refreshPaymentStatus as jest.Mock).mockImplementation(async () => {
+        session.booking!.step = 'payment_authorized';
+      });
+
+      await service.getState(session);
+
+      expect(bookingRecords.upsertFromSession).toHaveBeenCalledTimes(1);
+      expect(bookingRecords.upsertFromSession).toHaveBeenCalledWith(
+        session.userId,
+        session.booking,
+        'PAYMENT_AUTHORIZED',
+      );
+    });
+
+    it('does not persist again on a subsequent poll once already authorized', async () => {
+      const { service, paymentsService, bookingRecords } = buildService();
+      const session = buildSession();
+      await startAtPaymentStep(service, session);
+      session.booking!.step = 'payment_authorized'; // already transitioned on a prior call
+      (paymentsService.refreshPaymentStatus as jest.Mock).mockResolvedValue(undefined);
+
+      await service.getState(session);
+
+      expect(bookingRecords.upsertFromSession).not.toHaveBeenCalled();
+    });
+
+    it('persists on the transition into payment_failed too, for a real audit trail', async () => {
+      const { service, paymentsService, bookingRecords } = buildService();
+      const session = buildSession();
+      await startAtPaymentStep(service, session);
+      (paymentsService.refreshPaymentStatus as jest.Mock).mockImplementation(async () => {
+        session.booking!.step = 'payment_failed';
+      });
+
+      await service.getState(session);
+
+      expect(bookingRecords.upsertFromSession).toHaveBeenCalledWith(
+        session.userId,
+        session.booking,
+        'PAYMENT_FAILED',
+      );
+    });
+
+    it('does not persist while still on an intermediate step (e.g. requires_action)', async () => {
+      const { service, bookingRecords } = buildService();
+      const session = buildSession();
+      await startAtPaymentStep(service, session);
+
+      await service.getState(session);
+
+      expect(bookingRecords.upsertFromSession).not.toHaveBeenCalled();
+    });
   });
 });

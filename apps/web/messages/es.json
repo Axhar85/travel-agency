@@ -19,7 +19,15 @@
     "holidays": "Vacaciones",
     "offers": "Ofertas",
     "destinations": "Destinos",
-    "travelGuide": "Guía de viaje"
+    "travelGuide": "Guía de viaje",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión"
+  },
+  "Hero": {
+    "cta": "Reserva tu viaje",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "goToSlide": "Ir a la diapositiva {number}"
   },
   "SearchWidget": {
     "tabs": {
@@ -32,23 +40,7 @@
     "comingSoonBody": "Estamos preparando este servicio. Mientras tanto, prueba a buscar tu vuelo."
   },
   "Categories": {
-    "explore": "Explorar ofertas →",
-    "southAsia": {
-      "title": "Sur de Asia",
-      "subtitle": "Pakistán, India, Bangladés y más"
-    },
-    "philippines": {
-      "title": "Filipinas",
-      "subtitle": "Vuela a casa por menos"
-    },
-    "latinAmerica": {
-      "title": "Latinoamérica",
-      "subtitle": "Conectando contigo lo que importa"
-    },
-    "hajjUmrah": {
-      "title": "Hach y Umrah",
-      "subtitle": "Tranquilidad en cada paso"
-    }
+    "explore": "Explorar ofertas →"
   },
   "Services": {
     "cheapFlights": "Vuelos baratos",
@@ -227,6 +219,49 @@
     "hide": "Ocultar",
     "delete": "Eliminar",
     "moveUp": "Subir posición",
-    "moveDown": "Bajar posición"
+    "moveDown": "Bajar posición",
+    "heroSlidesTitle": "Carrusel principal",
+    "destinationCardsTitle": "Tarjetas de destinos",
+    "titleEs": "Título (español)",
+    "titleEn": "Título (inglés)",
+    "subtitleEs": "Subtítulo (español)",
+    "subtitleEn": "Subtítulo (inglés)",
+    "linkUrlRequired": "Enlace",
+    "linkUrlHint": "Ruta interna de la web, por ejemplo /hajj-umrah o /search?origin=MAD&destination=LHE&departureDate=2026-09-01&adults=1&cabinClass=ECONOMY",
+    "noHeroSlides": "Todavía no hay diapositivas.",
+    "noDestinationCards": "Todavía no hay tarjetas de destino.",
+    "nav": {
+      "promotions": "Promociones",
+      "heroSlides": "Carrusel",
+      "destinationCards": "Tarjetas de destinos"
+    }
+  },
+  "Account": {
+    "loginTitle": "Iniciar sesión",
+    "registerTitle": "Crear cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordHint": "Mínimo 8 caracteres",
+    "firstName": "Nombre (opcional)",
+    "lastName": "Apellidos (opcional)",
+    "login": "Entrar",
+    "loggingIn": "Entrando…",
+    "loginError": "Correo o contraseña incorrectos, o demasiados intentos. Inténtalo de nuevo.",
+    "register": "Crear cuenta",
+    "registering": "Creando cuenta…",
+    "registerError": "No se pudo crear la cuenta. Inténtalo de nuevo.",
+    "emailTaken": "Ya existe una cuenta con este correo electrónico.",
+    "noAccount": "¿No tienes cuenta?",
+    "registerLink": "Crear una",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "loginLink": "Inicia sesión",
+    "bookingsTitle": "Mis reservas",
+    "loading": "Cargando…",
+    "bookingsLoadError": "No se pudieron cargar tus reservas.",
+    "noBookings": "Todavía no tienes reservas.",
+    "statusAuthorized": "Pago autorizado",
+    "statusFailed": "Pago fallido",
+    "passengerCount": "{count, plural, one {# pasajero} other {# pasajeros}}",
+    "bookedOn": "Reservado el {date}"
   }
 }

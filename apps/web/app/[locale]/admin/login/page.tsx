@@ -10,7 +10,7 @@ export default async function AdminLoginPage({
   setRequestLocale(locale);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 px-6 py-12 dark:bg-black">
+    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12">
       <AdminLoginForm />
     </div>
   );

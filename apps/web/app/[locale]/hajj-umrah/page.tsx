@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { SearchForm } from "@/components/search-form";
-import { cardClass } from "@/lib/ui";
+import { searchCardClass } from "@/lib/ui";
 
 export default async function HajjUmrahPage({
   params,
@@ -13,7 +13,7 @@ export default async function HajjUmrahPage({
   const t = await getTranslations({ locale, namespace: "HajjUmrah" });
 
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 dark:bg-black">
+    <div className="flex flex-1 flex-col items-center">
       <div className="relative flex w-full items-center justify-center overflow-hidden py-20">
         <Image
           src="https://images.unsplash.com/photo-1513072064285-240f87fa81e8?auto=format&fit=crop&w=1600&q=75"
@@ -30,12 +30,12 @@ export default async function HajjUmrahPage({
         </div>
       </div>
 
-      <div className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-12">
-        <p className="max-w-xl text-center text-zinc-600 dark:text-zinc-400">{t("body")}</p>
-        <div className={`w-full p-4 sm:p-6 ${cardClass}`}>
+      <div className="flex w-full max-w-5xl flex-col items-center gap-8 px-6 py-12">
+        <p className="max-w-xl text-center text-zinc-600">{t("body")}</p>
+        <div className={`w-full p-4 sm:p-6 ${searchCardClass}`}>
           <SearchForm defaultDestination="JED" />
         </div>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">{t("destinationHint")}</p>
+        <p className="text-xs text-zinc-500">{t("destinationHint")}</p>
       </div>
     </div>
   );

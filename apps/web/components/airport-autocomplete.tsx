@@ -142,7 +142,7 @@ export function AirportAutocomplete({ label, placeholder, value, onChange, exclu
         <ul
           id={listId}
           role="listbox"
-          className="absolute top-full z-10 mt-1 max-h-64 w-full min-w-64 overflow-auto rounded-lg border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-900"
+          className="absolute top-full z-10 mt-1 max-h-64 w-full min-w-64 overflow-auto rounded-lg border border-zinc-200 bg-white py-1 shadow-lg"
         >
           {results.map((airport, index) => (
             <li key={airport.code} role="option" aria-selected={index === highlightedIndex}>
@@ -152,13 +152,13 @@ export function AirportAutocomplete({ label, placeholder, value, onChange, exclu
                 onClick={() => selectAirport(airport)}
                 onMouseEnter={() => setHighlightedIndex(index)}
                 className={`flex w-full flex-col items-start px-3 py-2 text-left text-sm ${
-                  index === highlightedIndex ? "bg-primary-50 dark:bg-primary-900/40" : ""
+                  index === highlightedIndex ? "bg-primary-50" : ""
                 }`}
               >
-                <span className="font-medium text-black dark:text-white">
+                <span className="font-medium text-black">
                   {locale === "es" ? airport.city.es : airport.city.en} ({airport.code})
                 </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="text-xs text-zinc-500">
                   {airport.name} — {locale === "es" ? airport.country.es : airport.country.en}
                 </span>
               </button>

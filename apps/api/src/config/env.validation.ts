@@ -117,6 +117,15 @@ class EnvironmentVariables {
   @Min(60)
   @IsOptional()
   BOOKING_SESSION_TTL_SECONDS: number = 1800;
+
+  // How long a logged-in customer's session survives - deliberately much
+  // longer than BOOKING_SESSION_TTL_SECONDS above. Set on session.cookie.maxAge
+  // at login/register time (see AccountService); guest/admin sessions never
+  // touch this and keep the short default.
+  @IsInt()
+  @Min(60)
+  @IsOptional()
+  ACCOUNT_SESSION_TTL_SECONDS: number = 2_592_000; // 30 days
 }
 
 export function validateEnv(

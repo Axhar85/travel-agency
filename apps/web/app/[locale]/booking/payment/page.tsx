@@ -10,7 +10,7 @@ export default async function PaymentPage({
   setRequestLocale(locale);
 
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 px-6 py-12 dark:bg-black">
+    <div className="flex flex-1 flex-col items-center px-6 py-12">
       <BookingPayment />
     </div>
   );

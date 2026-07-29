@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { AmadeusService } from '../amadeus/amadeus.service';
 import { PaymentsService } from '../payments/payments.service';
+import { BookingRecordRepository } from './booking-record.repository';
 import {
   BookingSessionData,
   PassengerCounts,
@@ -18,6 +19,7 @@ export class BookingService {
   constructor(
     private readonly amadeusService: AmadeusService,
     private readonly paymentsService: PaymentsService,
+    private readonly bookingRecords: BookingRecordRepository,
   ) {}
 
   async startBooking(
@@ -54,8 +56,27 @@ export class BookingService {
     // Payment status only ever changes via Stripe's webhook, which has no
     // session cookie to update it with directly - refresh from the Redis
     // record of truth on every read instead (see PaymentsService).
+    const previousStep = session.booking.step;
     await this.paymentsService.refreshPaymentStatus(session);
-    return session.booking;
+    const booking = session.booking;
+
+    // Persist exactly once, on the transition edge into a terminal payment
+    // state - not on every subsequent poll of this endpoint while the
+    // confirmation screen is open (getState() is polled repeatedly).
+    if (
+      previousStep !== booking.step &&
+      (booking.step === 'payment_authorized' || booking.step === 'payment_failed')
+    ) {
+      await this.bookingRecords.upsertFromSession(
+        session.userId,
+        booking,
+        booking.step === 'payment_authorized'
+          ? 'PAYMENT_AUTHORIZED'
+          : 'PAYMENT_FAILED',
+      );
+    }
+
+    return booking;
   }
 
   async submitPassengers(

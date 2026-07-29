@@ -56,7 +56,7 @@ function CheckoutForm({ onAuthorized }: { onAuthorized: () => void }) {
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
       <PaymentElement />
       {error && (
-        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-700 dark:bg-red-950 dark:text-red-200">
+        <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           {error}
         </div>
       )}

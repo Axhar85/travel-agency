@@ -1,10 +1,14 @@
 import type {
+  BookingRecord,
   BookingSessionData,
+  DestinationCardData,
+  HeroSlideData,
   Passenger,
   PaymentIntentResult,
   PricedOffer,
   Promotion,
   SearchFlightsResponse,
+  User,
 } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
@@ -219,6 +223,276 @@ export async function deletePromotion(id: string): Promise<void> {
 
 export async function reorderPromotions(orderedIds: string[]): Promise<void> {
   const response = await fetch(`${API_URL}/admin/promotions/reorder`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderedIds }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+// --- Customer accounts (optional login - guest checkout is unaffected) ---
+
+export interface RegisterInput {
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export async function register(input: RegisterInput): Promise<User> {
+  const response = await fetch(`${API_URL}/account/register`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as User;
+}
+
+export async function login(email: string, password: string): Promise<User> {
+  const response = await fetch(`${API_URL}/account/login`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as User;
+}
+
+export async function logout(): Promise<void> {
+  const response = await fetch(`${API_URL}/account/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+export async function getMe(): Promise<User> {
+  const response = await fetch(`${API_URL}/account/me`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as User;
+}
+
+export async function getMyBookings(): Promise<BookingRecord[]> {
+  const response = await fetch(`${API_URL}/account/bookings`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as BookingRecord[];
+}
+
+// --- Hero slides (owner-editable homepage carousel) ---
+
+export async function getHeroSlides(): Promise<HeroSlideData[]> {
+  const response = await fetch(`${API_URL}/hero-slides`, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as HeroSlideData[];
+}
+
+export async function getAllHeroSlides(): Promise<HeroSlideData[]> {
+  const response = await fetch(`${API_URL}/admin/hero-slides`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as HeroSlideData[];
+}
+
+export interface HeroSlideInput {
+  titleEs: string;
+  titleEn: string;
+  subtitleEs: string;
+  subtitleEn: string;
+  linkUrl: string;
+}
+
+export async function createHeroSlide(
+  image: File,
+  input: HeroSlideInput,
+): Promise<HeroSlideData> {
+  const formData = new FormData();
+  formData.set("image", image);
+  formData.set("titleEs", input.titleEs);
+  formData.set("titleEn", input.titleEn);
+  formData.set("subtitleEs", input.subtitleEs);
+  formData.set("subtitleEn", input.subtitleEn);
+  formData.set("linkUrl", input.linkUrl);
+
+  const response = await fetch(`${API_URL}/admin/hero-slides`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as HeroSlideData;
+}
+
+export async function updateHeroSlide(
+  id: string,
+  patch: { isActive?: boolean },
+): Promise<HeroSlideData> {
+  const response = await fetch(`${API_URL}/admin/hero-slides/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as HeroSlideData;
+}
+
+export async function deleteHeroSlide(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/hero-slides/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+export async function reorderHeroSlides(orderedIds: string[]): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/hero-slides/reorder`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderedIds }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+// --- Destination cards (owner-editable homepage category cards) ---
+
+export async function getDestinationCards(): Promise<DestinationCardData[]> {
+  const response = await fetch(`${API_URL}/destination-cards`, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as DestinationCardData[];
+}
+
+export async function getAllDestinationCards(): Promise<DestinationCardData[]> {
+  const response = await fetch(`${API_URL}/admin/destination-cards`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as DestinationCardData[];
+}
+
+export type DestinationCardInput = HeroSlideInput;
+
+export async function createDestinationCard(
+  image: File,
+  input: DestinationCardInput,
+): Promise<DestinationCardData> {
+  const formData = new FormData();
+  formData.set("image", image);
+  formData.set("titleEs", input.titleEs);
+  formData.set("titleEn", input.titleEn);
+  formData.set("subtitleEs", input.subtitleEs);
+  formData.set("subtitleEn", input.subtitleEn);
+  formData.set("linkUrl", input.linkUrl);
+
+  const response = await fetch(`${API_URL}/admin/destination-cards`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as DestinationCardData;
+}
+
+export async function updateDestinationCard(
+  id: string,
+  patch: { isActive?: boolean },
+): Promise<DestinationCardData> {
+  const response = await fetch(`${API_URL}/admin/destination-cards/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as DestinationCardData;
+}
+
+export async function deleteDestinationCard(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/destination-cards/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+export async function reorderDestinationCards(orderedIds: string[]): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/destination-cards/reorder`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },

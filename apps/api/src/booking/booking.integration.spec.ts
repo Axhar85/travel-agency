@@ -7,6 +7,7 @@ import { AmadeusService } from '../amadeus/amadeus.service';
 import { PricedOffer } from '../amadeus/interfaces/gds-client.interface';
 import { REDIS_CLIENT } from '../redis/redis.constants';
 import { RedisSessionStore } from '../session/redis-session.store';
+import { BookingRecordRepository } from './booking-record.repository';
 import { BookingModule } from './booking.module';
 
 // AmadeusModule's internal provider graph (AmadeusAuthService,
@@ -73,6 +74,16 @@ describe('Booking session (integration)', () => {
     })
       .overrideProvider(AmadeusService)
       .useValue({ priceOffer: jest.fn().mockResolvedValue(pricedOffer) })
+      // Neither test here reaches the payment_authorized/failed transition
+      // (both stop at the 'passengers' step), so BookingRecordRepository -
+      // which needs a real Postgres via PrismaService, not part of this
+      // test's fake-Redis-only setup - is never actually exercised. Override
+      // with a stub rather than wiring PrismaModule in just to satisfy DI.
+      .overrideProvider(BookingRecordRepository)
+      .useValue({
+        upsertFromSession: jest.fn().mockResolvedValue(undefined),
+        findByUserId: jest.fn().mockResolvedValue([]),
+      })
       .compile();
 
     app = moduleFixture.createNestApplication();
