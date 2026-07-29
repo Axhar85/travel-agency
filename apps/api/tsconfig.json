@@ -13,6 +13,13 @@
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
+    // Without this, tsc infers the output root from every .ts file it sees -
+    // including apps/api/scripts/hash-admin-password.ts and
+    // apps/api/prisma/seed.ts, both outside src/ - which pushes everything
+    // down a level (dist/src/main.js instead of dist/main.js). Render's
+    // start command runs `node dist/main`, so that mismatch is a real
+    // deploy-breaking bug, not just a style nit.
+    "rootDir": "./src",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -21,5 +28,10 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  // rootDir above requires every compiled file to live under src/ - scripts/
+  // and prisma/seed.ts are one-off ts-node entry points (see package.json's
+  // admin:hash-password and prisma.seed scripts), never part of the built
+  // app, so they're excluded here rather than compiled alongside it.
+  "include": ["src/**/*.ts"]
 }
