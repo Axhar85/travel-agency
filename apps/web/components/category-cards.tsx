@@ -24,7 +24,7 @@ export function CategoryCards({ cards }: CategoryCardsProps) {
           <Link
             key={card.id}
             href={card.linkUrl}
-            className="group relative flex h-48 flex-col justify-end overflow-hidden rounded-2xl p-4 shadow-sm transition-shadow hover:shadow-md"
+            className="group relative flex h-48 flex-col justify-end overflow-hidden rounded-2xl p-4 shadow-sm transition-shadow hover:shadow-md lg:h-96"
           >
             <Image
               src={`${card.imageUrl}?auto=format&fit=crop&w=640&q=70`}
