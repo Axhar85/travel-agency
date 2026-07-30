@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { MyBookingsList } from "@/components/my-bookings-list";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AccountBookingsPage({
   params,

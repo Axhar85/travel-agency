@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { AccountLoginForm } from "@/components/account-login-form";
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AccountLoginPage({
   params,
