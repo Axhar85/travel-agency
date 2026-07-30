@@ -12,6 +12,7 @@ import { HealthModule } from './health/health.module';
 import { HeroSlidesModule } from './hero-slides/hero-slides.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { PromoCardsModule } from './promo-cards/promo-cards.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { RedisModule } from './redis/redis.module';
 import { SearchModule } from './search/search.module';
@@ -34,6 +35,7 @@ import { SearchModule } from './search/search.module';
     AccountModule,
     HeroSlidesModule,
     DestinationCardsModule,
+    PromoCardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

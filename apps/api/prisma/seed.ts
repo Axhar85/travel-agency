@@ -96,6 +96,45 @@ const DESTINATION_CARDS = [
   },
 ];
 
+const PROMO_CARDS = [
+  {
+    titleEs: 'Ofertas de última hora',
+    titleEn: 'Last-minute deals',
+    subtitleEs: 'Vuelos con descuento para los próximos 30 días',
+    subtitleEn: 'Discounted fares for the next 30 days',
+    imageUrl: 'https://images.unsplash.com/photo-1687992176093-6417a93fa3d0',
+    linkUrl: searchLinkFor('LHE'),
+    sortOrder: 0,
+  },
+  {
+    titleEs: 'Reserva con antelación y ahorra',
+    titleEn: 'Book early and save',
+    subtitleEs: 'Los mejores precios para tus vuelos de Hach y Umrah',
+    subtitleEn: 'The best fares on your Hajj & Umrah flights',
+    imageUrl: 'https://images.unsplash.com/photo-1513072064285-240f87fa81e8',
+    linkUrl: '/hajj-umrah',
+    sortOrder: 1,
+  },
+  {
+    titleEs: 'Ofertas familiares',
+    titleEn: 'Family offers',
+    subtitleEs: 'Vuela con los tuyos a Pakistán, India y Bangladés por menos',
+    subtitleEn: 'Fly with your family to Pakistan, India & Bangladesh for less',
+    imageUrl: 'https://images.unsplash.com/photo-1564507592333-c60657eea523',
+    linkUrl: searchLinkFor('LHE'),
+    sortOrder: 2,
+  },
+  {
+    titleEs: 'Descuentos en Filipinas',
+    titleEn: 'Philippines discounts',
+    subtitleEs: 'Precios especiales de Madrid a Manila este mes',
+    subtitleEn: 'Special Madrid-to-Manila fares this month',
+    imageUrl: 'https://images.unsplash.com/photo-1709486851809-ca174bfed7ed',
+    linkUrl: searchLinkFor('MNL'),
+    sortOrder: 3,
+  },
+];
+
 async function main() {
   const existingSlides = await prisma.heroSlide.count();
   if (existingSlides === 0) {
@@ -111,6 +150,14 @@ async function main() {
     console.log(`Seeded ${DESTINATION_CARDS.length} destination cards.`);
   } else {
     console.log(`Skipping destination card seed - ${existingCards} row(s) already exist.`);
+  }
+
+  const existingPromoCards = await prisma.promoCard.count();
+  if (existingPromoCards === 0) {
+    await prisma.promoCard.createMany({ data: PROMO_CARDS });
+    console.log(`Seeded ${PROMO_CARDS.length} promo cards.`);
+  } else {
+    console.log(`Skipping promo card seed - ${existingPromoCards} row(s) already exist.`);
   }
 }
 

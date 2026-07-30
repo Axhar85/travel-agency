@@ -4,10 +4,11 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CategoryCards } from "@/components/category-cards";
 import { HeroCarousel } from "@/components/hero-carousel";
+import { PromoCards } from "@/components/promo-cards";
 import { PromotionsBanner } from "@/components/promotions-banner";
 import { SearchWidget } from "@/components/search-widget";
-import { getDestinationCards, getHeroSlides } from "@/lib/api";
-import type { DestinationCardData, HeroSlideData } from "@/lib/types";
+import { getDestinationCards, getHeroSlides, getPromoCards } from "@/lib/api";
+import type { DestinationCardData, HeroSlideData, PromoCardData } from "@/lib/types";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -21,18 +22,17 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  // Fetched here (not inside HeroCarousel/CategoryCards) so a fetch failure
-  // can fall back to an empty list without taking down the homepage -
-  // matches PromotionsBanner's try/catch-and-skip pattern.
-  let slides: HeroSlideData[] = [];
-  let cards: DestinationCardData[] = [];
-  try {
-    [slides, cards] = await Promise.all([getHeroSlides(), getDestinationCards()]);
-  } catch {
-    // leave both empty - HeroCarousel/CategoryCards render nothing rather than crash
-  }
+  // Fetched here (not inside HeroCarousel/CategoryCards/PromoCards), each with
+  // its own try/catch, so a failure in any one section falls back to an empty
+  // list without taking the others down too - matches PromotionsBanner's
+  // try/catch-and-skip pattern.
+  const [slides, cards, promoCards] = await Promise.all([
+    getHeroSlides().catch(() => [] as HeroSlideData[]),
+    getDestinationCards().catch(() => [] as DestinationCardData[]),
+    getPromoCards().catch(() => [] as PromoCardData[]),
+  ]);
 
-  return <HomeContent slides={slides} cards={cards} />;
+  return <HomeContent slides={slides} cards={cards} promoCards={promoCards} />;
 }
 
 const SERVICES = [
@@ -56,9 +56,10 @@ const TRUST_BADGES = [
 interface HomeContentProps {
   slides: HeroSlideData[];
   cards: DestinationCardData[];
+  promoCards: PromoCardData[];
 }
 
-function HomeContent({ slides, cards }: HomeContentProps) {
+function HomeContent({ slides, cards, promoCards }: HomeContentProps) {
   const t = useTranslations("HomePage");
   const services = useTranslations("Services");
   const trust = useTranslations("TrustBadges");
@@ -73,6 +74,16 @@ function HomeContent({ slides, cards }: HomeContentProps) {
 
       <div id="promotions" className="flex w-full max-w-6xl scroll-mt-20 flex-col items-center gap-8 px-6 pt-10">
         <PromotionsBanner />
+      </div>
+
+      <div className="flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-12">
+        <h2 className="text-2xl font-semibold text-black">{t("promoCardsHeading")}</h2>
+        <PromoCards cards={promoCards} />
+      </div>
+
+      <div className="flex w-full max-w-3xl flex-col items-center gap-3 px-6 py-4 text-center">
+        <h2 className="text-xl font-semibold text-black">{t("trustHeading")}</h2>
+        <p className="text-sm text-zinc-600">{t("trustBody")}</p>
       </div>
 
       <div className="flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-12">
