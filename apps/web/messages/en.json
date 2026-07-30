@@ -4,6 +4,9 @@
     "title": "Flights at the best price, no surprises",
     "subtitle": "IATA-accredited travel agency in Madrid. Search, book, and ticket flights all in one place.",
     "categoriesHeading": "Popular destinations",
+    "promoCardsHeading": "Special offers",
+    "trustHeading": "Why book with Naafi Travels?",
+    "trustBody": "We're an IATA-accredited travel agency, so you're protected by the same standards trusted by airlines worldwide. We work hard to beat other agencies on price, without cutting corners - clear pricing, real support, and a team trusted by thousands of travelers across Spain.",
     "servicesHeading": "Popular services"
   },
   "LocaleSwitcher": {
@@ -41,6 +44,9 @@
   },
   "Categories": {
     "explore": "Explore fares →"
+  },
+  "PromoCards": {
+    "explore": "View offer →"
   },
   "Services": {
     "cheapFlights": "Cheap Flights",
@@ -231,10 +237,13 @@
     "linkUrlHint": "An in-app path, e.g. /hajj-umrah or /search?origin=MAD&destination=LHE&departureDate=2026-09-01&adults=1&cabinClass=ECONOMY",
     "noHeroSlides": "No hero slides yet.",
     "noDestinationCards": "No destination cards yet.",
+    "promoCardsTitle": "Promo Cards",
+    "noPromoCards": "No promo cards yet.",
     "nav": {
       "promotions": "Promotions",
       "heroSlides": "Hero Carousel",
-      "destinationCards": "Destination Cards"
+      "destinationCards": "Destination Cards",
+      "promoCards": "Promo Cards"
     }
   },
   "Account": {

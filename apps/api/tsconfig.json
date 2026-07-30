@@ -22,6 +22,16 @@
     "rootDir": "./src",
     "baseUrl": "./",
     "incremental": true,
+    // Without an explicit path, tsc's incremental cache file defaults to
+    // living next to tsconfig.json (project root), *outside* outDir. That
+    // defeats nest-cli.json's deleteOutDir:true safety net: deleting dist/
+    // doesn't touch the cache, so a later build can see "0 source changes
+    // since last run" and skip emitting entirely - even though dist/ is
+    // gone - leaving `node dist/main` (or nest start's own watch process)
+    // unable to find anything to run. Bit both a local `nest build` and a
+    // `nest start --watch` restart this same session. Putting the cache
+    // inside dist/ means deleteOutDir actually wipes it too.
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,

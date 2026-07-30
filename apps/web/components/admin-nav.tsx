@@ -7,9 +7,10 @@ const LINKS = [
   { key: "promotions", href: "/admin/promotions" },
   { key: "heroSlides", href: "/admin/hero-slides" },
   { key: "destinationCards", href: "/admin/destination-cards" },
+  { key: "promoCards", href: "/admin/promo-cards" },
 ];
 
-/** Simple tab strip so an owner can jump between the 3 content-management pages - no full admin shell needed for this small a surface. */
+/** Simple tab strip so an owner can jump between the 4 content-management pages - no full admin shell needed for this small a surface. */
 export function AdminNav() {
   const t = useTranslations("Admin");
   const pathname = usePathname();

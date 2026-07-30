@@ -4,6 +4,9 @@
     "title": "Vuelos al mejor precio, sin sorpresas",
     "subtitle": "Agencia de viajes acreditada IATA en Madrid. Búsqueda, reserva y emisión de billetes de avión en un solo sitio.",
     "categoriesHeading": "Destinos populares",
+    "promoCardsHeading": "Ofertas especiales",
+    "trustHeading": "¿Por qué reservar con Naafi Travels?",
+    "trustBody": "Somos una agencia de viajes acreditada por IATA, lo que te protege con los mismos estándares en los que confían las aerolíneas de todo el mundo. Trabajamos para ofrecerte mejores precios que otras agencias, sin recortar en calidad: precios claros, atención real, y un equipo en el que confían miles de viajeros en toda España.",
     "servicesHeading": "Servicios populares"
   },
   "LocaleSwitcher": {
@@ -41,6 +44,9 @@
   },
   "Categories": {
     "explore": "Explorar ofertas →"
+  },
+  "PromoCards": {
+    "explore": "Ver oferta →"
   },
   "Services": {
     "cheapFlights": "Vuelos baratos",
@@ -231,10 +237,13 @@
     "linkUrlHint": "Ruta interna de la web, por ejemplo /hajj-umrah o /search?origin=MAD&destination=LHE&departureDate=2026-09-01&adults=1&cabinClass=ECONOMY",
     "noHeroSlides": "Todavía no hay diapositivas.",
     "noDestinationCards": "Todavía no hay tarjetas de destino.",
+    "promoCardsTitle": "Tarjetas de ofertas",
+    "noPromoCards": "Todavía no hay tarjetas de ofertas.",
     "nav": {
       "promotions": "Promociones",
       "heroSlides": "Carrusel",
-      "destinationCards": "Tarjetas de destinos"
+      "destinationCards": "Tarjetas de destinos",
+      "promoCards": "Tarjetas de ofertas"
     }
   },
   "Account": {

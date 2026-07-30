@@ -6,6 +6,7 @@ import type {
   Passenger,
   PaymentIntentResult,
   PricedOffer,
+  PromoCardData,
   Promotion,
   SearchFlightsResponse,
   User,
@@ -493,6 +494,100 @@ export async function deleteDestinationCard(id: string): Promise<void> {
 
 export async function reorderDestinationCards(orderedIds: string[]): Promise<void> {
   const response = await fetch(`${API_URL}/admin/destination-cards/reorder`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderedIds }),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+// --- Promo cards (owner-editable homepage promotions grid, separate feed from destination cards) ---
+
+export async function getPromoCards(): Promise<PromoCardData[]> {
+  const response = await fetch(`${API_URL}/promo-cards`, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as PromoCardData[];
+}
+
+export async function getAllPromoCards(): Promise<PromoCardData[]> {
+  const response = await fetch(`${API_URL}/admin/promo-cards`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as PromoCardData[];
+}
+
+export type PromoCardInput = HeroSlideInput;
+
+export async function createPromoCard(
+  image: File,
+  input: PromoCardInput,
+): Promise<PromoCardData> {
+  const formData = new FormData();
+  formData.set("image", image);
+  formData.set("titleEs", input.titleEs);
+  formData.set("titleEn", input.titleEn);
+  formData.set("subtitleEs", input.subtitleEs);
+  formData.set("subtitleEn", input.subtitleEn);
+  formData.set("linkUrl", input.linkUrl);
+
+  const response = await fetch(`${API_URL}/admin/promo-cards`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as PromoCardData;
+}
+
+export async function updatePromoCard(
+  id: string,
+  patch: { isActive?: boolean },
+): Promise<PromoCardData> {
+  const response = await fetch(`${API_URL}/admin/promo-cards/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+
+  return (await response.json()) as PromoCardData;
+}
+
+export async function deletePromoCard(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/promo-cards/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new ApiError(await parseErrorMessage(response), response.status);
+  }
+}
+
+export async function reorderPromoCards(orderedIds: string[]): Promise<void> {
+  const response = await fetch(`${API_URL}/admin/promo-cards/reorder`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },

@@ -160,6 +160,22 @@ export interface DestinationCardData {
   updatedAt: string;
 }
 
+// Mirrors apps/api/prisma/schema.prisma's PromoCard model - field-identical to
+// DestinationCardData but a separate homepage feed (see PromoCardsModule).
+export interface PromoCardData {
+  id: string;
+  titleEs: string;
+  titleEn: string;
+  subtitleEs: string;
+  subtitleEn: string;
+  imageUrl: string;
+  linkUrl: string;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Mirrors apps/api/src/account/account.service.ts's SafeUser (never includes passwordHash).
 export interface User {
   id: string;

@@ -3,20 +3,20 @@
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import type { DestinationCardData } from "@/lib/types";
+import type { PromoCardData } from "@/lib/types";
 
-interface CategoryCardsProps {
-  cards: DestinationCardData[];
+interface PromoCardsProps {
+  cards: PromoCardData[];
 }
 
-export function CategoryCards({ cards }: CategoryCardsProps) {
-  const t = useTranslations("Categories");
+export function PromoCards({ cards }: PromoCardsProps) {
+  const t = useTranslations("PromoCards");
   const locale = useLocale();
 
   if (cards.length === 0) return null;
 
   return (
-    <div id="destinations" className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div id="promo-cards" className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => {
         const title = locale === "es" ? card.titleEs : card.titleEn;
         const subtitle = locale === "es" ? card.subtitleEs : card.subtitleEn;

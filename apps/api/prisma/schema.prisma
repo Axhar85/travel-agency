@@ -64,6 +64,25 @@ model DestinationCard {
   @@index([isActive, sortOrder])
 }
 
+/// Owner-editable homepage promo card - same vertical-card visual treatment
+/// as DestinationCard but a separate feed, so it can carry its own set of
+/// offers independent of the destinations grid - see PromoCardsModule.
+model PromoCard {
+  id         String   @id @default(uuid())
+  titleEs    String
+  titleEn    String
+  subtitleEs String
+  subtitleEn String
+  imageUrl   String
+  linkUrl    String
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
 /// Customer account. Separate from the single hardcoded admin login
 /// (AdminModule) - this is the "log in to check flights / see past
 /// bookings" account system, optional at every step (guest checkout is
