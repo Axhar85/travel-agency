@@ -14,7 +14,7 @@ export async function generateMetadata({
 
   return {
     // absolute - the copy already includes the brand name, so it shouldn't
-    // also get the layout's "%s | Naafi Travels" template suffix appended.
+    // also get the layout's "%s | Al-Naafi Travels" template suffix appended.
     title: { absolute: t("title") },
     description: t("subtitle"),
   };

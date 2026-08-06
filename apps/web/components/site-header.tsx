@@ -140,7 +140,10 @@ export function SiteHeader() {
           ))}
           <div className="flex flex-col gap-3 px-2 pt-2">
             <AccountLinks user={user} onLogout={handleLogout} onNavigate={() => setMobileOpen(false)} />
-            <LocaleSwitcher />
+            <div className="flex items-center gap-2 self-start rounded-full border border-accent-300 bg-accent-50 px-3 py-1.5 dark:border-accent-700 dark:bg-accent-900/30">
+              <span aria-hidden>🌐</span>
+              <LocaleSwitcher />
+            </div>
           </div>
         </nav>
       )}

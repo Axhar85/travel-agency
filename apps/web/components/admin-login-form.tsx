@@ -34,7 +34,7 @@ export function AdminLoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className={`flex w-full max-w-sm flex-col gap-4 p-6 ${cardClass}`}>
-      <h1 className="text-xl font-semibold text-black">{t("loginTitle")}</h1>
+      <h1 className="text-2xl font-bold text-primary-700 dark:text-primary-300">{t("loginTitle")}</h1>
       <label className="flex flex-col gap-1 text-sm">
         <span className={labelClass}>{t("password")}</span>
         <input
