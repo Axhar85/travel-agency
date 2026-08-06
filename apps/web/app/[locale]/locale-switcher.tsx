@@ -14,13 +14,13 @@ export function LocaleSwitcher({ inverted = false }: LocaleSwitcherProps) {
   const activeLocale = useLocale();
   const pathname = usePathname();
 
-  const activeClass = inverted ? "font-semibold text-white" : "font-semibold text-black dark:text-white";
+  const activeClass = inverted ? "font-semibold text-white" : "font-semibold text-primary-700 dark:text-primary-300";
   const inactiveClass = inverted
     ? "text-primary-200 hover:text-white"
-    : "text-zinc-500 hover:text-black dark:text-zinc-400 dark:hover:text-white";
+    : "text-zinc-500 hover:text-primary-700 dark:text-zinc-400 dark:hover:text-primary-300";
 
   return (
-    <nav aria-label="Language" className="flex gap-3 text-sm">
+    <nav aria-label="Language" className="flex gap-3 text-base">
       {routing.locales.map((locale) => (
         <Link
           key={locale}

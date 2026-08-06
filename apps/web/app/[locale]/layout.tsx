@@ -34,7 +34,7 @@ export async function generateMetadata({
   const nav = await getTranslations({ locale, namespace: "Nav" });
 
   // title.default applies to any page that doesn't set its own title (most
-  // of the site); title.template applies the "<page> | Naafi Travels"
+  // of the site); title.template applies the "<page> | Al-Naafi Travels"
   // suffix to any page that DOES set one (e.g. hajj-umrah). Same for
   // description/openGraph - pages can override, everything else inherits
   // these as sensible defaults rather than every page needing its own copy.

@@ -1,4 +1,4 @@
-# Naafi Travels — Flight Booking Platform
+# Al-Naafi Travels — Flight Booking Platform
 
 Flight booking website for an IATA-accredited travel agency based in Madrid,
 Spain, specializing in flights to Pakistan, India, Bangladesh, the
