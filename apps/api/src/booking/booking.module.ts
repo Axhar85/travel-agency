@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AmadeusModule } from '../amadeus/amadeus.module';
+import { GdsModule } from '../gds/gds.module';
 import { PaymentsModule } from '../payments/payments.module';
 import { BookingRecordRepository } from './booking-record.repository';
 import { BookingController } from './booking.controller';
 import { BookingService } from './booking.service';
 
 @Module({
-  imports: [AmadeusModule, PaymentsModule],
+  imports: [GdsModule, PaymentsModule],
   controllers: [BookingController],
   providers: [BookingService, BookingRecordRepository],
   // Exported so AccountModule can list a logged-in customer's bookings

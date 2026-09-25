@@ -12,7 +12,10 @@ Philippines, Latin America, and Hajj & Umrah travel.
 - **Database**: PostgreSQL via Prisma
 - **Cache / sessions**: Redis
 - **Payments**: Stripe (Payment Intents + Elements, 3DS2/SCA)
-- **Flight data**: Amadeus Self-Service REST API (sandbox)
+- **Flight data**: Amadeus and Travelport (Galileo), searched side by side and
+  merged into one normalized format (see `GDS_PROVIDERS` below). Amadeus's free
+  Self-Service portal was shut down on 2026-07-17, so Amadeus access now goes
+  through their Enterprise programme.
 - **Image storage**: Vercel Blob (owner-managed homepage promotions)
 
 ## Prerequisites
@@ -102,7 +105,9 @@ specific feature, and everything else keeps working without it.
 
 | Credential | Where it goes | Unlocks | Get it from |
 |---|---|---|---|
-| `AMADEUS_CLIENT_ID` / `AMADEUS_CLIENT_SECRET` | `apps/api/.env` | Real flight search results (without it, search fails gracefully with a "temporarily unavailable" message) | [developers.amadeus.com](https://developers.amadeus.com) (Self-Service sandbox) |
+| `AMADEUS_CLIENT_ID` / `AMADEUS_CLIENT_SECRET` | `apps/api/.env` | Real flight search results (without it, search fails gracefully with a "temporarily unavailable" message) | Amadeus Enterprise access — request it at [developers.amadeus.com](https://developers.amadeus.com) (the old free Self-Service signup no longer exists) |
+| `TRAVELPORT_CLIENT_ID` / `TRAVELPORT_CLIENT_SECRET` / `TRAVELPORT_USERNAME` / `TRAVELPORT_PASSWORD` | `apps/api/.env` | Travelport (Galileo) connectivity — visible in `GET /health` once `travelport` is added to `GDS_PROVIDERS`. Fare search itself is a later step (see PROGRESS.md) | Trial credentials arrive by email after [requesting a trial](https://my.travelport.com/v2/get-trial); production credentials only come from Travelport provisioning the agency |
+| `GDS_PROVIDERS` | `apps/api/.env` | Which providers are searched, e.g. `amadeus,travelport`. Defaults to `amadeus` only | Not a secret — just list the providers whose credentials are set |
 | `STRIPE_SECRET_KEY` / `STRIPE_PUBLISHABLE_KEY` | `apps/api/.env` / `apps/web/.env.local` | Card payments on the booking flow | [dashboard.stripe.com](https://dashboard.stripe.com) (test mode keys) |
 | `STRIPE_WEBHOOK_SECRET` | `apps/api/.env` | Payment status updates from Stripe | Run `stripe listen --forward-to localhost:4000/payments/webhook` with the [Stripe CLI](https://docs.stripe.com/stripe-cli) — it prints the secret |
 | `BLOB_READ_WRITE_TOKEN` | `apps/api/.env` | Uploading images in the admin promotions panel | Create a Blob store at [vercel.com](https://vercel.com) (works independently of where the app itself is hosted) |
@@ -122,7 +127,7 @@ Run from the repo root unless noted:
 | `npm run build` | Production build of both apps |
 | `npm run docker:up` / `npm run docker:down` | Start/stop local Postgres + Redis |
 | `npm test` | Backend test suite |
-| `npm run test:amadeus` | Backend tests scoped to the Amadeus module |
+| `npm run test:amadeus` | Backend tests scoped to the Amadeus module (the GDS aggregation layer's tests live in `apps/api/src/gds`) |
 | `npm run test:payments` | Backend tests scoped to the payments module |
 
 Inside `apps/api`:

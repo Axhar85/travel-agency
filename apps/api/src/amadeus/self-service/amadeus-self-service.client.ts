@@ -15,7 +15,7 @@ import {
   Passenger,
   PricedOffer,
   SearchFlightsParams,
-} from '../interfaces/gds-client.interface';
+} from '../../gds/interfaces/gds-client.interface';
 import { AmadeusAuthService } from './amadeus-auth.service';
 import { toFlightOffer } from './amadeus.mapper';
 import {

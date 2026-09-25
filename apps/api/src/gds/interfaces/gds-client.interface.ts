@@ -1,7 +1,11 @@
-// Domain types returned by GdsClient are normalized shapes owned by this
-// module — never a passthrough of Amadeus REST JSON. When the Enterprise/SOAP
-// implementation lands, it must produce these same shapes so nothing outside
-// AmadeusModule has to change. See CLAUDE.md "Amadeus swap plan".
+// Domain types returned by GdsClient are normalized shapes owned by the gds/
+// module — never a passthrough of any provider's raw JSON/XML. Every provider
+// (Amadeus Self-Service today, Amadeus Enterprise and Travelport/Galileo
+// next) must map its own response into these same shapes, so nothing outside
+// that provider's own module has to change. See CLAUDE.md "Amadeus swap plan".
+
+/** The GDS/content providers this app can search and book through. */
+export type GdsProviderName = 'amadeus' | 'travelport';
 
 export interface SearchFlightsParams {
   originLocationCode: string;
@@ -51,15 +55,36 @@ export interface FarePrice {
 }
 
 /**
+ * PUBLISHED = publicly filed fare. PRIVATE = anything negotiated, net/
+ * consolidator, or otherwise not publicly filed - this is where the agency's
+ * "ethnic"/community fares for specific airlines and destinations fall. The
+ * distinction is a real business rule (eligibility, markup, who may ticket
+ * it), so it travels with the offer instead of being flattened away.
+ */
+export type FareType = 'PUBLISHED' | 'PRIVATE';
+
+export interface FareClassification {
+  type: FareType;
+  /** Distinct fare basis codes (e.g. "YLOWPK") across the priced segments. */
+  basisCodes: string[];
+}
+
+/**
  * `contentSource` reflects whether this offer is GDS, NDC, or LCC content —
  * a real business distinction (drives post-booking servicing limits, see
  * CLAUDE.md re: Self-Service Flight Create Orders), not a REST-shape leak.
+ *
+ * `provider` is which GDS returned the offer; providers set it themselves
+ * when they map a response. `fare` is only present when the provider could
+ * classify the fare - absent means "unknown", never "published".
  */
 export interface FlightOffer {
   id: string;
+  provider: GdsProviderName;
   contentSource: string;
   itineraries: FlightItinerary[];
   price: FarePrice;
+  fare?: FareClassification;
   numberOfBookableSeats?: number;
   validatingAirlineCodes: string[];
   lastTicketingDate?: string;
@@ -106,8 +131,9 @@ export interface GdsOrder {
 }
 
 /**
- * GDS-agnostic contract. Nothing outside AmadeusModule may depend on
- * implementation details of whichever GdsClient is bound at runtime.
+ * GDS-agnostic contract. Nothing outside a provider's own module may depend
+ * on implementation details of that provider - callers go through GdsService,
+ * which routes each call to the provider that owns the offer/order id.
  */
 export interface GdsClient {
   searchFlights(params: SearchFlightsParams): Promise<FlightOffer[]>;
@@ -115,4 +141,10 @@ export interface GdsClient {
   createOrder(offerId: string, passengers: Passenger[]): Promise<GdsOrder>;
   issueTicket(orderId: string): Promise<GdsOrder>;
   getOrder(orderId: string): Promise<GdsOrder>;
+}
+
+/** A GdsClient registered with the aggregator under its provider name. */
+export interface GdsProviderEntry {
+  name: GdsProviderName;
+  client: GdsClient;
 }

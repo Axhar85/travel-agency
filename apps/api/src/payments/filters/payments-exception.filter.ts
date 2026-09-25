@@ -9,7 +9,7 @@ import type { Response } from 'express';
 import Stripe from 'stripe';
 
 /**
- * Mirrors AmadeusExceptionFilter: never forward a raw Stripe error object to
+ * Mirrors GdsExceptionFilter: never forward a raw Stripe error object to
  * the client. StripeCardError is the one exception - Stripe writes those
  * messages ("Your card was declined.") specifically for end-user display and
  * they contain no account/credential detail, so they're safe to pass through

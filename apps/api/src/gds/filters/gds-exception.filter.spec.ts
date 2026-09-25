@@ -2,10 +2,13 @@ import { ArgumentsHost, HttpStatus } from '@nestjs/common';
 import {
   AmadeusApiError,
   AmadeusAuthError,
+} from '../../amadeus/errors/amadeus.errors';
+import { TravelportAuthError } from '../../travelport/errors/travelport.errors';
+import {
   GdsNotImplementedError,
   OfferExpiredError,
-} from '../errors/amadeus.errors';
-import { AmadeusExceptionFilter } from './amadeus-exception.filter';
+} from '../errors/gds.errors';
+import { GdsExceptionFilter } from './gds-exception.filter';
 
 function buildHost() {
   const json = jest.fn();
@@ -18,8 +21,21 @@ function buildHost() {
   return { host, status, json };
 }
 
-describe('AmadeusExceptionFilter', () => {
-  const filter = new AmadeusExceptionFilter();
+describe('GdsExceptionFilter', () => {
+  const filter = new GdsExceptionFilter();
+
+  it('maps a Travelport auth failure to 503 the same way as Amadeus (provider-neutral)', () => {
+    const { host, status, json } = buildHost();
+
+    filter.catch(
+      new TravelportAuthError('bad creds', { password: 'do-not-leak' }),
+      host,
+    );
+
+    expect(status).toHaveBeenCalledWith(HttpStatus.SERVICE_UNAVAILABLE);
+    const body = json.mock.calls[0][0] as Record<string, unknown>;
+    expect(JSON.stringify(body)).not.toContain('do-not-leak');
+  });
 
   it('maps OfferExpiredError to 410 Gone', () => {
     const { host, status, json } = buildHost();

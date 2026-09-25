@@ -2,7 +2,7 @@ import type { Request } from 'express';
 import type {
   Passenger,
   PricedOffer,
-} from '../amadeus/interfaces/gds-client.interface';
+} from '../gds/interfaces/gds-client.interface';
 
 // `Session` alone (from express-session) doesn't include SessionData's
 // fields - express's own type declares req.session as the intersection

@@ -5,7 +5,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { AmadeusHealthIndicator } from './amadeus-health.indicator';
 import { GDS_CLIENT } from './amadeus.constants';
 import { AmadeusService } from './amadeus.service';
-import { GdsClient } from './interfaces/gds-client.interface';
+import { GdsClient } from '../gds/interfaces/gds-client.interface';
 import { AmadeusAuthService } from './self-service/amadeus-auth.service';
 import { AmadeusSelfServiceClient } from './self-service/amadeus-self-service.client';
 import { OfferCacheService } from './self-service/offer-cache.service';

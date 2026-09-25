@@ -1,6 +1,6 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { AmadeusService } from '../amadeus/amadeus.service';
-import { PricedOffer } from '../amadeus/interfaces/gds-client.interface';
+import { GdsService } from '../gds/gds.service';
+import { PricedOffer } from '../gds/interfaces/gds-client.interface';
 import { PaymentsService } from '../payments/payments.service';
 import { BookingRecordRepository } from './booking-record.repository';
 import { BookingService } from './booking.service';
@@ -10,7 +10,8 @@ import { PassengerDto } from './dto/passenger.dto';
 import { SubmitPassengersDto } from './dto/submit-passengers.dto';
 
 const pricedOffer: PricedOffer = {
-  id: 'offer-1',
+  id: 'amadeus.offer-1',
+  provider: 'amadeus',
   contentSource: 'GDS',
   itineraries: [],
   price: { currency: 'EUR', total: '199.99', base: '150.00' },
@@ -38,9 +39,9 @@ function buildAdult(overrides: Partial<PassengerDto> = {}): PassengerDto {
 
 describe('BookingService', () => {
   function buildService() {
-    const amadeusService = {
+    const gdsService = {
       priceOffer: jest.fn().mockResolvedValue(pricedOffer),
-    } as unknown as AmadeusService;
+    } as unknown as GdsService;
     const paymentsService = {
       refreshPaymentStatus: jest.fn().mockResolvedValue(undefined),
     } as unknown as PaymentsService;
@@ -48,15 +49,19 @@ describe('BookingService', () => {
       upsertFromSession: jest.fn().mockResolvedValue(undefined),
       findByUserId: jest.fn().mockResolvedValue([]),
     } as unknown as BookingRecordRepository;
-    const service = new BookingService(amadeusService, paymentsService, bookingRecords);
-    return { service, amadeusService, paymentsService, bookingRecords };
+    const service = new BookingService(
+      gdsService,
+      paymentsService,
+      bookingRecords,
+    );
+    return { service, gdsService, paymentsService, bookingRecords };
   }
 
   it('startBooking re-prices the offer and stores the booking in the session', async () => {
-    const { service, amadeusService } = buildService();
+    const { service, gdsService } = buildService();
     const session = buildSession();
     const dto: StartBookingDto = {
-      offerId: 'offer-1',
+      offerId: 'amadeus.offer-1',
       adults: 1,
       children: 0,
       infants: 0,
@@ -64,7 +69,7 @@ describe('BookingService', () => {
 
     const result = await service.startBooking(session, dto);
 
-    expect(amadeusService.priceOffer).toHaveBeenCalledWith('offer-1');
+    expect(gdsService.priceOffer).toHaveBeenCalledWith('amadeus.offer-1');
     expect(result).toEqual({
       pricedOffer,
       passengerCounts: { adults: 1, children: 0, infants: 0 },
@@ -84,7 +89,10 @@ describe('BookingService', () => {
   it('getState returns the stored booking', async () => {
     const { service } = buildService();
     const session = buildSession();
-    await service.startBooking(session, { offerId: 'offer-1', adults: 1 });
+    await service.startBooking(session, {
+      offerId: 'amadeus.offer-1',
+      adults: 1,
+    });
 
     const state = await service.getState(session);
     expect(state.step).toBe('passengers');
@@ -94,7 +102,7 @@ describe('BookingService', () => {
     const { service } = buildService();
     const session = buildSession();
     await service.startBooking(session, {
-      offerId: 'offer-1',
+      offerId: 'amadeus.offer-1',
       adults: 1,
       infants: 1,
     });
@@ -115,7 +123,10 @@ describe('BookingService', () => {
   it('submitPassengers rejects a passenger count mismatch', async () => {
     const { service } = buildService();
     const session = buildSession();
-    await service.startBooking(session, { offerId: 'offer-1', adults: 2 });
+    await service.startBooking(session, {
+      offerId: 'amadeus.offer-1',
+      adults: 2,
+    });
     const dto: SubmitPassengersDto = { passengers: [buildAdult()] };
 
     await expect(service.submitPassengers(session, dto)).rejects.toThrow(
@@ -127,7 +138,7 @@ describe('BookingService', () => {
     const { service } = buildService();
     const session = buildSession();
     await service.startBooking(session, {
-      offerId: 'offer-1',
+      offerId: 'amadeus.offer-1',
       adults: 1,
       children: 1,
     });
@@ -155,8 +166,14 @@ describe('BookingService', () => {
       service: BookingService,
       session: RequestSession,
     ) {
-      await service.startBooking(session, { offerId: 'offer-1', adults: 1 });
-      session.booking!.payment = { paymentIntentId: 'pi_1', status: 'requires_payment' };
+      await service.startBooking(session, {
+        offerId: 'amadeus.offer-1',
+        adults: 1,
+      });
+      session.booking!.payment = {
+        paymentIntentId: 'pi_1',
+        status: 'requires_payment',
+      };
       session.booking!.step = 'payment';
     }
 
@@ -164,9 +181,11 @@ describe('BookingService', () => {
       const { service, paymentsService, bookingRecords } = buildService();
       const session = buildSession();
       await startAtPaymentStep(service, session);
-      (paymentsService.refreshPaymentStatus as jest.Mock).mockImplementation(async () => {
-        session.booking!.step = 'payment_authorized';
-      });
+      (paymentsService.refreshPaymentStatus as jest.Mock).mockImplementation(
+        async () => {
+          session.booking!.step = 'payment_authorized';
+        },
+      );
 
       await service.getState(session);
 
@@ -183,7 +202,9 @@ describe('BookingService', () => {
       const session = buildSession();
       await startAtPaymentStep(service, session);
       session.booking!.step = 'payment_authorized'; // already transitioned on a prior call
-      (paymentsService.refreshPaymentStatus as jest.Mock).mockResolvedValue(undefined);
+      (paymentsService.refreshPaymentStatus as jest.Mock).mockResolvedValue(
+        undefined,
+      );
 
       await service.getState(session);
 
@@ -194,9 +215,11 @@ describe('BookingService', () => {
       const { service, paymentsService, bookingRecords } = buildService();
       const session = buildSession();
       await startAtPaymentStep(service, session);
-      (paymentsService.refreshPaymentStatus as jest.Mock).mockImplementation(async () => {
-        session.booking!.step = 'payment_failed';
-      });
+      (paymentsService.refreshPaymentStatus as jest.Mock).mockImplementation(
+        async () => {
+          session.booking!.step = 'payment_failed';
+        },
+      );
 
       await service.getState(session);
 

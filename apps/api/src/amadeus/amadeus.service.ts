@@ -7,7 +7,7 @@ import type {
   Passenger,
   PricedOffer,
   SearchFlightsParams,
-} from './interfaces/gds-client.interface';
+} from '../gds/interfaces/gds-client.interface';
 
 /**
  * The single entry point the rest of the app depends on. Everything outside

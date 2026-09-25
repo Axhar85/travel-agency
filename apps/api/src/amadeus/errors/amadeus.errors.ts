@@ -1,35 +1,22 @@
-export class AmadeusAuthError extends Error {
-  constructor(
-    message: string,
-    readonly cause?: unknown,
-  ) {
-    super(message);
+import { GdsApiError, GdsAuthError } from '../../gds/errors/gds.errors';
+
+// OfferExpiredError and GdsNotImplementedError are provider-neutral and now
+// live in gds/errors - re-exported here so existing imports keep working.
+export {
+  GdsNotImplementedError,
+  OfferExpiredError,
+} from '../../gds/errors/gds.errors';
+
+export class AmadeusAuthError extends GdsAuthError {
+  constructor(message: string, cause?: unknown) {
+    super(message, cause, 'amadeus');
     this.name = 'AmadeusAuthError';
   }
 }
 
-export class AmadeusApiError extends Error {
-  constructor(
-    message: string,
-    readonly statusCode?: number,
-    readonly cause?: unknown,
-  ) {
-    super(message);
+export class AmadeusApiError extends GdsApiError {
+  constructor(message: string, statusCode?: number, cause?: unknown) {
+    super(message, statusCode, cause, 'amadeus');
     this.name = 'AmadeusApiError';
-  }
-}
-
-/** Thrown by priceOffer()/createOrder() when a cached offer has expired or was never cached. */
-export class OfferExpiredError extends Error {
-  constructor(readonly offerId: string) {
-    super(`Offer ${offerId} has expired or was not found — search again`);
-    this.name = 'OfferExpiredError';
-  }
-}
-
-export class GdsNotImplementedError extends Error {
-  constructor(method: string, phase: string) {
-    super(`${method}() is not implemented yet — arrives in ${phase}`);
-    this.name = 'GdsNotImplementedError';
   }
 }

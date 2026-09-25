@@ -1,8 +1,9 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator';
+import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { IsGdsOfferId } from '../../gds/is-gds-offer-id.decorator';
 
 export class StartBookingDto {
-  @IsUUID()
+  @IsGdsOfferId()
   offerId: string;
 
   @Type(() => Number)

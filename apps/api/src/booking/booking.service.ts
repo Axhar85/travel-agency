@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AmadeusService } from '../amadeus/amadeus.service';
+import { GdsService } from '../gds/gds.service';
 import { PaymentsService } from '../payments/payments.service';
 import { BookingRecordRepository } from './booking-record.repository';
 import {
@@ -17,7 +17,7 @@ import { SubmitPassengersDto } from './dto/submit-passengers.dto';
 @Injectable()
 export class BookingService {
   constructor(
-    private readonly amadeusService: AmadeusService,
+    private readonly gdsService: GdsService,
     private readonly paymentsService: PaymentsService,
     private readonly bookingRecords: BookingRecordRepository,
   ) {}
@@ -29,7 +29,7 @@ export class BookingService {
     // Re-price on entering the funnel, same as Phase 2's price-confirmation
     // step - the offer may have been sitting in the results list for a
     // while before the customer clicked through.
-    const pricedOffer = await this.amadeusService.priceOffer(dto.offerId);
+    const pricedOffer = await this.gdsService.priceOffer(dto.offerId);
 
     const passengerCounts: PassengerCounts = {
       adults: dto.adults,
