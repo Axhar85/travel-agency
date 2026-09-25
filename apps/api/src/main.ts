@@ -4,8 +4,8 @@ import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import session from 'express-session';
 import type Redis from 'ioredis';
-import { AmadeusExceptionFilter } from './amadeus/filters/amadeus-exception.filter';
 import { AppModule } from './app.module';
+import { GdsExceptionFilter } from './gds/filters/gds-exception.filter';
 import { PaymentsExceptionFilter } from './payments/filters/payments-exception.filter';
 import { REDIS_CLIENT } from './redis/redis.constants';
 import { RedisSessionStore } from './session/redis-session.store';
@@ -68,10 +68,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.useGlobalFilters(
-    new AmadeusExceptionFilter(),
-    new PaymentsExceptionFilter(),
-  );
+  app.useGlobalFilters(new GdsExceptionFilter(), new PaymentsExceptionFilter());
 
   const port = config.get<number>('PORT', 4000);
   await app.listen(port);

@@ -1,5 +1,5 @@
 import { AmadeusService } from './amadeus.service';
-import type { GdsClient } from './interfaces/gds-client.interface';
+import type { GdsClient } from '../gds/interfaces/gds-client.interface';
 
 describe('AmadeusService', () => {
   it('delegates every GdsClient method to whichever client is bound to GDS_CLIENT', async () => {

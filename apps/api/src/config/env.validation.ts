@@ -9,6 +9,7 @@ import {
   Min,
   validateSync,
 } from 'class-validator';
+import { parseEnabledProviders } from '../gds/enabled-providers';
 
 enum AmadeusMode {
   SelfService = 'self-service',
@@ -52,6 +53,45 @@ class EnvironmentVariables {
 
   @IsUrl({ require_tld: false })
   AMADEUS_API_BASE_URL: string;
+
+  // Which GDS providers are searched, comma-separated and in merge order, e.g.
+  // "amadeus,travelport". Defaults to Amadeus only so adding a provider to the
+  // codebase never changes an existing environment until it's opted in.
+  @IsString()
+  @IsOptional()
+  GDS_PROVIDERS: string = 'amadeus';
+
+  // Per-provider ceiling on a single search fan-out call: a hung provider is
+  // reported as failed after this long instead of stalling every search.
+  @IsInt()
+  @Min(1000)
+  @IsOptional()
+  GDS_SEARCH_TIMEOUT_MS: number = 12_000;
+
+  // Travelport (Galileo) TripServices credentials - all four are issued
+  // together by Travelport (trial by email, production via provisioning).
+  // Empty at boot is allowed, same pattern as Amadeus/Stripe: only the
+  // provider's own auth call fails, never app startup. "preproduction" is the
+  // default so production is always an explicit choice.
+  @IsIn(['preproduction', 'production'])
+  @IsOptional()
+  TRAVELPORT_ENV: string = 'preproduction';
+
+  @IsString()
+  @IsOptional()
+  TRAVELPORT_CLIENT_ID: string = '';
+
+  @IsString()
+  @IsOptional()
+  TRAVELPORT_CLIENT_SECRET: string = '';
+
+  @IsString()
+  @IsOptional()
+  TRAVELPORT_USERNAME: string = '';
+
+  @IsString()
+  @IsOptional()
+  TRAVELPORT_PASSWORD: string = '';
 
   // How long a single raw Amadeus offer stays cached in Redis so
   // priceOffer(offerId) can look it up (Self-Service is stateless).
@@ -141,6 +181,14 @@ export function validateEnv(
       .map((error) => Object.values(error.constraints ?? {}).join(', '))
       .join('; ');
     throw new Error(`Invalid environment configuration: ${messages}`);
+  }
+
+  try {
+    parseEnabledProviders(validated.GDS_PROVIDERS);
+  } catch (error) {
+    throw new Error(
+      `Invalid environment configuration: ${(error as Error).message}`,
+    );
   }
 
   // Two independent Redis caches sit on top of each other: SearchService

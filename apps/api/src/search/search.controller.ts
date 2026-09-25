@@ -2,7 +2,7 @@ import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import {
   FlightOffer,
   PricedOffer,
-} from '../amadeus/interfaces/gds-client.interface';
+} from '../gds/interfaces/gds-client.interface';
 import { PriceOfferParamsDto } from './dto/price-offer-params.dto';
 import { SearchFlightsQueryDto } from './dto/search-flights-query.dto';
 import { SearchService } from './search.service';

@@ -10,7 +10,8 @@ import { PaymentsService } from './payments.service';
 import { StripeService } from './stripe.service';
 
 const pricedOffer = {
-  id: 'offer-1',
+  id: 'amadeus.offer-1',
+  provider: 'amadeus' as const,
   contentSource: 'GDS',
   itineraries: [],
   price: { currency: 'EUR', total: '450.00', base: '400.00' },

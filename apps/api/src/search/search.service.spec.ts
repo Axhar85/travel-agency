@@ -1,11 +1,12 @@
 import { ConfigService } from '@nestjs/config';
-import { AmadeusService } from '../amadeus/amadeus.service';
-import { FlightOffer } from '../amadeus/interfaces/gds-client.interface';
+import { GdsService } from '../gds/gds.service';
+import { FlightOffer } from '../gds/interfaces/gds-client.interface';
 import { SearchFlightsQueryDto } from './dto/search-flights-query.dto';
 import { SearchService } from './search.service';
 
 const offer: FlightOffer = {
-  id: 'offer-1',
+  id: 'amadeus.offer-1',
+  provider: 'amadeus',
   contentSource: 'GDS',
   itineraries: [],
   price: { currency: 'EUR', total: '199.99', base: '150.00' },
@@ -34,26 +35,28 @@ describe('SearchService', () => {
         return 'OK';
       }),
     } as any;
-    const amadeusService = {
-      searchFlights: jest.fn().mockResolvedValue([offer]),
+    const gdsService = {
+      searchFlightsDetailed: jest
+        .fn()
+        .mockResolvedValue({ offers: [offer], failedProviders: [] }),
       priceOffer: jest.fn().mockResolvedValue({
         ...offer,
         priceChanged: false,
         originalTotal: '199.99',
       }),
-    } as unknown as AmadeusService;
+    } as unknown as GdsService;
     const config = { get: () => 300 } as unknown as ConfigService;
-    const service = new SearchService(amadeusService, redis, config);
-    return { service, redis, amadeusService };
+    const service = new SearchService(gdsService, redis, config);
+    return { service, redis, gdsService };
   }
 
-  it('calls AmadeusService and caches the result on a cache miss', async () => {
-    const { service, redis, amadeusService } = buildService();
+  it('calls GdsService and caches the result on a cache miss', async () => {
+    const { service, redis, gdsService } = buildService();
 
     const result = await service.searchFlights(buildQuery());
 
     expect(result).toEqual({ offers: [offer], cached: false });
-    expect(amadeusService.searchFlights).toHaveBeenCalledTimes(1);
+    expect(gdsService.searchFlightsDetailed).toHaveBeenCalledTimes(1);
     expect(redis.set).toHaveBeenCalledWith(
       expect.stringContaining('search:flights:'),
       JSON.stringify([offer]),
@@ -62,36 +65,54 @@ describe('SearchService', () => {
     );
   });
 
-  it('returns the cached result without calling AmadeusService again for an equivalent search', async () => {
-    const { service, amadeusService } = buildService();
+  it('returns the cached result without calling GdsService again for an equivalent search', async () => {
+    const { service, gdsService } = buildService();
 
     await service.searchFlights(buildQuery());
     const second = await service.searchFlights(buildQuery());
 
     expect(second).toEqual({ offers: [offer], cached: true });
-    expect(amadeusService.searchFlights).toHaveBeenCalledTimes(1);
+    expect(gdsService.searchFlightsDetailed).toHaveBeenCalledTimes(1);
   });
 
   it('treats searches with different params as separate cache entries', async () => {
-    const { service, amadeusService } = buildService();
+    const { service, gdsService } = buildService();
 
     await service.searchFlights(buildQuery());
     await service.searchFlights(buildQuery({ destination: 'LHR' }));
 
-    expect(amadeusService.searchFlights).toHaveBeenCalledTimes(2);
+    expect(gdsService.searchFlightsDetailed).toHaveBeenCalledTimes(2);
   });
 
-  it('delegates priceOffer to AmadeusService', async () => {
-    const { service, amadeusService } = buildService();
+  it('does not cache a partial result when a provider failed, so a recovered provider is queried again', async () => {
+    const { service, redis, gdsService } = buildService();
+    (gdsService.searchFlightsDetailed as jest.Mock).mockResolvedValue({
+      offers: [offer],
+      failedProviders: ['travelport'],
+    });
 
-    const priced = await service.priceOffer('offer-1');
+    const first = await service.searchFlights(buildQuery());
+    const second = await service.searchFlights(buildQuery());
 
-    expect(amadeusService.priceOffer).toHaveBeenCalledWith('offer-1');
+    // Still returns what it has - a partial list beats an error page...
+    expect(first).toEqual({ offers: [offer], cached: false });
+    // ...but never stores it, so the next search retries every provider.
+    expect(redis.set).not.toHaveBeenCalled();
+    expect(second.cached).toBe(false);
+    expect(gdsService.searchFlightsDetailed).toHaveBeenCalledTimes(2);
+  });
+
+  it('delegates priceOffer to GdsService', async () => {
+    const { service, gdsService } = buildService();
+
+    const priced = await service.priceOffer('amadeus.offer-1');
+
+    expect(gdsService.priceOffer).toHaveBeenCalledWith('amadeus.offer-1');
     expect(priced.priceChanged).toBe(false);
   });
 
-  it('falls back to an uncached Amadeus call when Redis read fails, instead of throwing', async () => {
-    const { service, amadeusService } = buildService();
+  it('falls back to an uncached GDS call when Redis read fails, instead of throwing', async () => {
+    const { service, gdsService } = buildService();
     service['redis'].get = jest
       .fn()
       .mockRejectedValue(new Error('ECONNREFUSED'));
@@ -99,11 +120,11 @@ describe('SearchService', () => {
     const result = await service.searchFlights(buildQuery());
 
     expect(result).toEqual({ offers: [offer], cached: false });
-    expect(amadeusService.searchFlights).toHaveBeenCalledTimes(1);
+    expect(gdsService.searchFlightsDetailed).toHaveBeenCalledTimes(1);
   });
 
   it('still returns search results when Redis write fails, instead of throwing', async () => {
-    const { service, amadeusService } = buildService();
+    const { service, gdsService } = buildService();
     service['redis'].set = jest
       .fn()
       .mockRejectedValue(new Error('ECONNREFUSED'));
@@ -111,6 +132,6 @@ describe('SearchService', () => {
     const result = await service.searchFlights(buildQuery());
 
     expect(result).toEqual({ offers: [offer], cached: false });
-    expect(amadeusService.searchFlights).toHaveBeenCalledTimes(1);
+    expect(gdsService.searchFlightsDetailed).toHaveBeenCalledTimes(1);
   });
 });

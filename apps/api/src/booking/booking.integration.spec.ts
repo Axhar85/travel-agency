@@ -3,8 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import session from 'express-session';
 import request from 'supertest';
-import { AmadeusService } from '../amadeus/amadeus.service';
-import { PricedOffer } from '../amadeus/interfaces/gds-client.interface';
+import { GdsService } from '../gds/gds.service';
+import { PricedOffer } from '../gds/interfaces/gds-client.interface';
 import { REDIS_CLIENT } from '../redis/redis.constants';
 import { RedisSessionStore } from '../session/redis-session.store';
 import { BookingRecordRepository } from './booking-record.repository';
@@ -12,9 +12,9 @@ import { BookingModule } from './booking.module';
 
 // AmadeusModule's internal provider graph (AmadeusAuthService,
 // OfferCacheService, ...) still gets instantiated even though the test below
-// overrides the exported AmadeusService - overriding a provider doesn't skip
+// overrides the exported GdsService - overriding a provider doesn't skip
 // building its module's other providers. None of them are ever actually
-// *called* here (only AmadeusService is used, and it's fully mocked), so a
+// *called* here (only GdsService is used, and it's fully mocked), so a
 // fake in-memory REDIS_CLIENT is enough; no real Redis connection needed.
 @Global()
 @Module({})
@@ -41,7 +41,8 @@ describe('Booking session (integration)', () => {
   let app: INestApplication;
 
   const pricedOffer: PricedOffer = {
-    id: 'offer-1',
+    id: 'amadeus.offer-1',
+    provider: 'amadeus',
     contentSource: 'GDS',
     itineraries: [],
     price: { currency: 'EUR', total: '199.99', base: '150.00' },
@@ -72,7 +73,7 @@ describe('Booking session (integration)', () => {
         BookingModule,
       ],
     })
-      .overrideProvider(AmadeusService)
+      .overrideProvider(GdsService)
       .useValue({ priceOffer: jest.fn().mockResolvedValue(pricedOffer) })
       // Neither test here reaches the payment_authorized/failed transition
       // (both stop at the 'passengers' step), so BookingRecordRepository -
@@ -115,7 +116,7 @@ describe('Booking session (integration)', () => {
 
     // Same agent = cookie jar carried forward, like a real browser tab.
     const stateResponse = await agent.get('/booking/state').expect(200);
-    expect(stateResponse.body.pricedOffer.id).toBe('offer-1');
+    expect(stateResponse.body.pricedOffer.id).toBe('amadeus.offer-1');
   });
 
   it('rejects /booking/state for a client with no session cookie at all', async () => {

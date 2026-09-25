@@ -38,11 +38,22 @@ export interface FarePrice {
   fees?: FareFee[];
 }
 
+// Which GDS returned an offer, and (when the provider could tell) whether the
+// fare is publicly filed or private/negotiated - mirrors gds-client.interface.ts.
+export type GdsProviderName = "amadeus" | "travelport";
+
+export interface FareClassification {
+  type: "PUBLISHED" | "PRIVATE";
+  basisCodes: string[];
+}
+
 export interface FlightOffer {
   id: string;
+  provider: GdsProviderName;
   contentSource: string;
   itineraries: FlightItinerary[];
   price: FarePrice;
+  fare?: FareClassification;
   numberOfBookableSeats?: number;
   validatingAirlineCodes: string[];
   lastTicketingDate?: string;

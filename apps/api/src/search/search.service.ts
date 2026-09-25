@@ -2,12 +2,12 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createHash } from 'crypto';
 import type Redis from 'ioredis';
-import { AmadeusService } from '../amadeus/amadeus.service';
+import { GdsService } from '../gds/gds.service';
 import {
   FlightOffer,
   PricedOffer,
   SearchFlightsParams,
-} from '../amadeus/interfaces/gds-client.interface';
+} from '../gds/interfaces/gds-client.interface';
 import { REDIS_CLIENT } from '../redis/redis.constants';
 import { SearchFlightsQueryDto } from './dto/search-flights-query.dto';
 
@@ -19,7 +19,7 @@ export class SearchService {
   private readonly ttlSeconds: number;
 
   constructor(
-    private readonly amadeusService: AmadeusService,
+    private readonly gdsService: GdsService,
     @Inject(REDIS_CLIENT) private readonly redis: Redis,
     config: ConfigService,
   ) {
@@ -36,18 +36,28 @@ export class SearchService {
     const cacheKey = this.buildCacheKey(params);
 
     // Redis is a performance optimization for search, not a hard dependency —
-    // a Redis outage should degrade to an uncached Amadeus call, not fail the
+    // a Redis outage should degrade to an uncached GDS call, not fail the
     // whole search with a 500. Errors are handled locally rather than left
-    // for AmadeusExceptionFilter, which only knows about Amadeus's own
-    // domain errors.
+    // for GdsExceptionFilter, which only knows about the GDS domain errors.
     const cached = await this.tryReadCache(cacheKey);
     if (cached) {
       this.logger.debug(`Search cache hit for ${cacheKey}`);
       return { offers: cached, cached: true };
     }
 
-    const offers = await this.amadeusService.searchFlights(params);
-    await this.tryWriteCache(cacheKey, offers);
+    const { offers, failedProviders } =
+      await this.gdsService.searchFlightsDetailed(params);
+
+    // A partial result (one provider errored or timed out) is still worth
+    // showing, but caching it would keep hiding that provider's fares for the
+    // whole TTL even after it recovers - so only cache complete results.
+    if (failedProviders.length === 0) {
+      await this.tryWriteCache(cacheKey, offers);
+    } else {
+      this.logger.warn(
+        `Not caching partial search results (failed: ${failedProviders.join(', ')})`,
+      );
+    }
 
     return { offers, cached: false };
   }
@@ -83,7 +93,7 @@ export class SearchService {
   }
 
   priceOffer(offerId: string): Promise<PricedOffer> {
-    return this.amadeusService.priceOffer(offerId);
+    return this.gdsService.priceOffer(offerId);
   }
 
   private toSearchParams(query: SearchFlightsQueryDto): SearchFlightsParams {

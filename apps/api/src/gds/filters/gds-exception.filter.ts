@@ -7,34 +7,27 @@ import {
 } from '@nestjs/common';
 import type { Response } from 'express';
 import {
-  AmadeusApiError,
-  AmadeusAuthError,
+  GdsApiError,
+  GdsAuthError,
   GdsNotImplementedError,
   OfferExpiredError,
-} from '../errors/amadeus.errors';
+} from '../errors/gds.errors';
 
-type AmadeusDomainError =
-  | AmadeusAuthError
-  | AmadeusApiError
-  | OfferExpiredError
-  | GdsNotImplementedError;
+type GdsDomainError =
+  GdsAuthError | GdsApiError | OfferExpiredError | GdsNotImplementedError;
 
 /**
- * Translates AmadeusModule's domain errors into safe HTTP responses.
- * Never forwards the raw upstream error/cause to the client — that's where
- * Amadeus response bodies, stack traces, or credential-adjacent detail could
- * leak. Full detail still goes to the server log.
+ * Translates GDS domain errors (from any provider - Amadeus, Travelport, ...)
+ * into safe HTTP responses. Never forwards the raw upstream error/cause to
+ * the client — that's where GDS response bodies, stack traces, or
+ * credential-adjacent detail could leak. Full detail still goes to the
+ * server log.
  */
-@Catch(
-  AmadeusAuthError,
-  AmadeusApiError,
-  OfferExpiredError,
-  GdsNotImplementedError,
-)
-export class AmadeusExceptionFilter implements ExceptionFilter {
-  private readonly logger = new Logger(AmadeusExceptionFilter.name);
+@Catch(GdsAuthError, GdsApiError, OfferExpiredError, GdsNotImplementedError)
+export class GdsExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(GdsExceptionFilter.name);
 
-  catch(exception: AmadeusDomainError, host: ArgumentsHost): void {
+  catch(exception: GdsDomainError, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const { status, message } = this.toHttpResponse(exception);
@@ -47,7 +40,7 @@ export class AmadeusExceptionFilter implements ExceptionFilter {
     });
   }
 
-  private toHttpResponse(exception: AmadeusDomainError): {
+  private toHttpResponse(exception: GdsDomainError): {
     status: number;
     message: string;
   } {
@@ -58,7 +51,7 @@ export class AmadeusExceptionFilter implements ExceptionFilter {
       };
     }
 
-    if (exception instanceof AmadeusAuthError) {
+    if (exception instanceof GdsAuthError) {
       // Also reachable from BookingService's priceOffer() call, not just
       // search - kept generic rather than saying "search" specifically.
       return {
@@ -68,10 +61,10 @@ export class AmadeusExceptionFilter implements ExceptionFilter {
       };
     }
 
-    if (exception instanceof AmadeusApiError) {
-      // This filter is global, not search-only - AmadeusApiError also
-      // surfaces from BookingService's priceOffer() call, so the message
-      // can't be phrased as if it's always about a search.
+    if (exception instanceof GdsApiError) {
+      // This filter is global, not search-only - GdsApiError also surfaces
+      // from BookingService's priceOffer() call, so the message can't be
+      // phrased as if it's always about a search.
       if (exception.statusCode === HttpStatus.TOO_MANY_REQUESTS) {
         // Distinct from a genuinely invalid request - the client did
         // nothing wrong here, retrying shortly is the correct action.

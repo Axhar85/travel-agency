@@ -34,11 +34,24 @@ export interface AmadeusRawPrice {
   fees?: AmadeusRawFee[];
 }
 
+export interface AmadeusRawFareDetail {
+  fareBasis?: string;
+}
+
+export interface AmadeusRawTravelerPricing {
+  fareDetailsBySegment?: AmadeusRawFareDetail[];
+}
+
 export interface AmadeusRawFlightOffer {
   id: string;
   source: string;
   itineraries: AmadeusRawItinerary[];
   price: AmadeusRawPrice;
+  // Which kind of fare this is - "PUBLISHED" for publicly filed fares, other
+  // values (e.g. NEGOTIATED, CORPORATE) for private ones. Only read when
+  // present; absent means the fare stays unclassified rather than assumed.
+  pricingOptions?: { fareType?: string[] };
+  travelerPricings?: AmadeusRawTravelerPricing[];
   numberOfBookableSeats?: number;
   validatingAirlineCodes?: string[];
   lastTicketingDate?: string;
